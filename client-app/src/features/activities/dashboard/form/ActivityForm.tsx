@@ -1,17 +1,12 @@
+import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-import { Activity } from "../../../../app/models/activity";
+import { useStore } from "../../../../app/stores/store";
 
-interface Props{
-    activity: Activity | undefined;
-    closeForm: () => void;
-    createOrEdit: (activity: Activity) => void;
-    submiting: boolean;
-}
+export default observer(function ActivityForm(){
+    const {activityStore} = useStore();
+    const {selectedActivity, closeForm, createActivity, updateActivity, loading} = activityStore;
 
-export default function ActivityForm({activity: selectedActivity, 
-    closeForm, createOrEdit, submiting} : Props){
-    
     const initialState = selectedActivity ?? {
         id: '',
         title: '',
@@ -25,7 +20,8 @@ export default function ActivityForm({activity: selectedActivity,
     const [activity, setActivity] = useState(initialState);
 
     function hadleSubmit(){
-        createOrEdit(activity);    
+        activity.id ? updateActivity(activity):
+        createActivity(activity);  
     }
 
     function hadleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -42,9 +38,9 @@ export default function ActivityForm({activity: selectedActivity,
             <Form.Input type='date' placeholder='Date'value={activity.date} name='date' onChange={hadleInputChange}/>
             <Form.Input placeholder='City'value={activity.city} name='city' onChange={hadleInputChange}/>
             <Form.Input placeholder='Venue'value={activity.venue} name='venue' onChange={hadleInputChange}/>
-            <Button loading={submiting} floated="right" positive type='submit' content='Submit'/>
+            <Button loading={loading} floated="right" positive type='submit' content='Submit'/>
             <Button onClick={closeForm} floated="right" type='button' content='Cancel'/>
         </Form>
     </Segment>
     )
-}
+})
