@@ -30,7 +30,7 @@ export default observer(function ActivityForm(){
         else {
             setLoadingInitial(false);
         }
-    }, [id, loadActivity]);
+    }, [id, loadActivity, setLoadingInitial]);
 
     function hadleSubmit(){
         if (activity.id.length === 0) {
