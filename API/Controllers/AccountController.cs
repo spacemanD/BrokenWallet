@@ -94,7 +94,7 @@ namespace API.Controllers
             {
                 DisplayName = appUser.DisplayName,
                 Image = null,
-                UserName = appUser.UserName,
+                Username = appUser.UserName,
                 Token = tokenService.CreateToken(appUser)
             };
         }
