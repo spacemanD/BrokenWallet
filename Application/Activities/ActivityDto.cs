@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Activities;
 using Application.Profiles;
 
 namespace API.DTOs
@@ -26,6 +27,6 @@ namespace API.DTOs
 
         public bool IsCancelled { get; set; }
 
-        public ICollection<Profile> Attendees { get; set; }
+        public ICollection<AtendeeDto> Attendees { get; set; }
     }
 }

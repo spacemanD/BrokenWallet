@@ -1,6 +1,7 @@
 ﻿using Application.Activities;
 using Application.Core;
 using Application.Interfaces;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +39,8 @@ namespace API.Extensions
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
 
             return services;
         }
