@@ -1,4 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
+import { boolean } from "yup";
 import agent from "../api/agent";
 import { Photo, Profile } from "../models/profile";
 import { store } from "./store";
@@ -85,6 +86,22 @@ export default class ProfileStore {
                 }
                 this.loading = false;
             })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => this.loading = false)
+        }
+    }
+
+    editProfile = async (profile: Profile) => {
+        this.loading = true;
+        try {
+            await agent.Profiles.edit(profile);
+            runInAction(() => {
+                runInAction(() => {
+                    if (profile.displayName) {
+                        store.userStore.setDisplayName(profile.displayName);
+                    }
+                })})
         } catch (error) {
             console.log(error);
             runInAction(() => this.loading = false)

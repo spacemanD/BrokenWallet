@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using API.DTOs;
 using Application.Activities;
-using AutoMapper;
+using Application.Profiles;
 using Domain;
+using Profile = AutoMapper.Profile;
 
 namespace Application.Core
 {
@@ -28,6 +29,12 @@ namespace Application.Core
 
             CreateMap<AppUser, Profiles.Profile>()
                 .ForMember(x => x.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain).Url));
+
+            CreateMap<ProfileDto, AppUser>()
+                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.DisplayName))
+                .ForMember(d => d.UserName, o => o.MapFrom(s => s.Username))
+                .ForMember(d => d.Bio, o => o.MapFrom(s => s.Bio));
+
         }
     }
 }
