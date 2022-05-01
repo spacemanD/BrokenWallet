@@ -101,6 +101,8 @@ export default class ProfileStore {
                     if (profile.displayName) {
                         store.userStore.setDisplayName(profile.displayName);
                     }
+                    this.profile = {...this.profile, ...profile as Profile};
+                    this.loading = false
                 })})
         } catch (error) {
             console.log(error);
