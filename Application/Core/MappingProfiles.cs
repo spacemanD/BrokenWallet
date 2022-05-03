@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using API.DTOs;
 using Application.Activities;
+using Application.Comments;
 using Application.Profiles;
 using Domain;
 using Profile = AutoMapper.Profile;
@@ -35,6 +36,10 @@ namespace Application.Core
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.Username))
                 .ForMember(d => d.Bio, o => o.MapFrom(s => s.Bio));
 
+            CreateMap<Comment, CommentDto>()
+                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName))
+                .ForMember(d => d.Username, o => o.MapFrom(s => s.Author.UserName))
+                .ForMember(x => x.Image, o => o.MapFrom(s => s.Author.Photos.FirstOrDefault(x => x.IsMain).Url));
         }
     }
 }
