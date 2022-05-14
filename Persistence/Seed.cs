@@ -8,36 +8,8 @@ namespace Persistence
         public static async Task SeedData(DataContext context,
             UserManager<AppUser> userManager)
         {
-            var users = userManager.Users.ToList();
-            if (!userManager.Users.Any())
-            {
-                users = new List<AppUser>
-                {
-                    new AppUser
-                    {
-                        DisplayName = "Bob",
-                        UserName = "bob",
-                        Email = "bob@test.com"
-                    },
-                    new AppUser
-                    {
-                        DisplayName = "Jane",
-                        UserName = "jane",
-                        Email = "jane@test.com"
-                    },
-                    new AppUser
-                    {
-                        DisplayName = "Tom",
-                        UserName = "tom",
-                        Email = "tom@test.com"
-                    },
-                };
-
-                foreach (var user in users)
-                {
-                    await userManager.CreateAsync(user, "Pa$$w0rd");
-                }
-            }
+            var flag = userManager.Users.Any();
+            var users = flag ? userManager.Users.ToList() : await GetUsers(userManager);
             if(!context.Activities.Any())
             {
                 var activities = new List<Activity>
@@ -256,6 +228,38 @@ namespace Persistence
                 await context.Activities.AddRangeAsync(activities);
                 await context.SaveChangesAsync();
             }
+        }
+
+        private async static Task<List<AppUser>> GetUsers(UserManager<AppUser> userManager)
+        {
+            var users = new List<AppUser>
+            {
+                new AppUser
+                {
+                        DisplayName = "Bob",
+                        UserName = "bob",
+                        Email = "bob@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Jane",
+                        UserName = "jane",
+                        Email = "jane@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Tom",
+                        UserName = "tom",
+                        Email = "tom@test.com"
+                    },
+                };
+
+            foreach (var user in users)
+            {
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+            }
+
+            return users;
         }
     }
 }
