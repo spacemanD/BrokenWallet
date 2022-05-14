@@ -12,9 +12,10 @@ namespace Persistence
         public static async Task SeedData(DataContext context,
             UserManager<AppUser> userManager)
         {
-            if (!userManager.Users.Any() && !context.Activities.Any())
+            var users = userManager.Users.ToList();
+            if (!userManager.Users.Any())
             {
-                var users = new List<AppUser>
+                users = new List<AppUser>
                 {
                     new AppUser
                     {
@@ -40,7 +41,9 @@ namespace Persistence
                 {
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
-
+            }
+            if(!context.Activities.Any())
+            {
                 var activities = new List<Activity>
                 {
                     new Activity
@@ -254,7 +257,6 @@ namespace Persistence
                         }
                     }
                 };
-
                 await context.Activities.AddRangeAsync(activities);
                 await context.SaveChangesAsync();
             }
