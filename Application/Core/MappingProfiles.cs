@@ -46,6 +46,13 @@ namespace Application.Core
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.Username))
                 .ForMember(d => d.Bio, o => o.MapFrom(s => s.Bio));
 
+            CreateMap<Activity, UserActivityDto>()            
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
+                .ForMember(d => d.Category, o => o.MapFrom(s => s.Category))
+                .ForMember(d => d.Title, o => o.MapFrom(s => s.Title))
+                .ForMember(d => d.HostUsername, o => o.MapFrom(s => s.Attendees.FirstOrDefault(x => x.AppUser.UserName == currentUsername)))
+                .ForMember(d => d.Date, o => o.MapFrom(s => s.Date));
+
             CreateMap<Comment, CommentDto>()
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName))
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.Author.UserName))
