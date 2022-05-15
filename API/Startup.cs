@@ -75,6 +75,7 @@ namespace API
                     "https://res.cloudinary.com",
                     "https://www.facebook.com",
                     "https://platform-lookaside.fbsbx.com",
+                    "https://react-app-spacemand.herokuapp.com",
                     "data:"
                     ))
                 .ScriptSources(s => s.Self()
