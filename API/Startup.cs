@@ -76,6 +76,7 @@ namespace API
                     "https://www.facebook.com",
                     "https://platform-lookaside.fbsbx.com",
                     "https://react-app-spacemand.herokuapp.com",
+                    "http://localhost:5000",
                     "data:"
                     ))
                 .ScriptSources(s => s.Self()
