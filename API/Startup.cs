@@ -71,14 +71,6 @@ namespace API
                 ))
                 .FormActions(s => s.Self())
                 .FrameAncestors(s => s.Self())
-                .ImageSources(s => s.Self().CustomSources(
-                    "https://res.cloudinary.com",
-                    "https://www.facebook.com",
-                    "https://platform-lookaside.fbsbx.com",
-                    "https://react-app-spacemand.herokuapp.com",
-                    "http://localhost:5000",
-                    "data:"
-                    ))
                 .ScriptSources(s => s.Self()
                     .CustomSources(
                         "sha256-HIgflxNtM43xg36bBIUoPTUuo+CXZ319LsTVRtsZ/VU=",

@@ -36,33 +36,22 @@ namespace Application.Profiles
             }
             public async Task<Result<List<UserActivityDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var profileActivities = new List<UserActivityDto>();
-                switch (request.Predicate)
+                var query = _context.ActivityAttendees
+                    .Where(u => u.AppUser!.UserName == request.Username)
+                    .OrderBy(a => a.Activity!.Date)
+                    .ProjectTo<UserActivityDto>(_mapper.ConfigurationProvider)
+                    .AsQueryable();
+
+                query = request.Predicate switch
                 {
-                    case "past":
-                        profileActivities = await _context.Activities.Where(x => x.Attendees.Any(x => x.AppUser.UserName == request.Username) 
-                            && x.Date <= DateTime.UtcNow) 
-                            .ProjectTo<UserActivityDto>(_mapper.ConfigurationProvider,
-                                new {currentUsername = _userAccessor.GetUserName()})
-                            .ToListAsync();
-                            break;
-                    case "hosting":
-                        profileActivities = await _context.Activities.Where(x => x.Attendees.Any(x => x.AppUser.UserName == request.Username 
-                            && x.IsHost)) 
-                            .ProjectTo<UserActivityDto>(_mapper.ConfigurationProvider,
-                                new {currentUsername = _userAccessor.GetUserName()})
-                            .ToListAsync();
-                            break;
-                    default: 
-                        profileActivities = await _context.Activities.Where(x => x.Attendees.Any(x => x.AppUser.UserName == request.Username) 
-                            && x.Date >= DateTime.UtcNow) 
-                            .ProjectTo<UserActivityDto>(_mapper.ConfigurationProvider,
-                                new {currentUsername = _userAccessor.GetUserName()})
-                            .ToListAsync();
-                            break;             
-                }
-                
-                return Result<List<UserActivityDto>>.Success(profileActivities);
+                    "past" => query.Where(a => a.Date <= DateTime.Now),
+                    "hosting" => query.Where(a => a.HostUsername == request.Username),
+                    _ => query.Where(a => a.Date >= DateTime.Now)
+                };
+
+                var activities = await query.ToListAsync(cancellationToken);
+
+                return Result<List<UserActivityDto>>.Success(activities);
             }
         }
     }
