@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
-using API.DTOs;
+﻿using API.DTOs;
 using Application.Activities;
 using Application.Comments;
 using Application.Profiles;
-using Domain;
+using Domain.Entities;
 using Profile = AutoMapper.Profile;
 
 namespace Application.Core

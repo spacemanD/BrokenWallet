@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain;
+﻿using Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,13 +12,13 @@ namespace Persistence
 
         public DbSet<Activity> Activities { get; set; }
 
-        public DbSet<ActivityAttendee> ActivityAttendees { get; set;}
+        public DbSet<ActivityAttendee> ActivityAttendees { get; set; }
 
         public DbSet<Photo> Photos { get; set;}
 
-        public DbSet<Comment> Comments { get; set;}
+        public DbSet<Comment> Comments { get; set; }
 
-        public DbSet<UserFollowing> UserFollowings { get; set;}
+        public DbSet<UserFollowing> UserFollowings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

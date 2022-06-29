@@ -1,4 +1,4 @@
-using Domain;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
@@ -230,7 +230,7 @@ namespace Persistence
             }
         }
 
-        private async static Task<List<AppUser>> GetUsers(UserManager<AppUser> userManager)
+        private static async Task<List<AppUser>> GetUsers(UserManager<AppUser> userManager)
         {
             var users = new List<AppUser>
             {
