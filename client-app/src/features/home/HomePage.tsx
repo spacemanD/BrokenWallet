@@ -11,14 +11,15 @@ export default observer(function HomePage() {
         <Segment inverted textAlign='center' vertical className="masthead">
             <Container text>
                 <Header as='h1' inverted>
-                    <Image size='massive' src='/assets/logo.png' alt='logo' style={{marginBottom: 12}}/>
-                    Reactivities
+                    <Image size='massive' src='/assets/wallet.png' alt='logo' style={{marginBottom: 12}}
+                    back/>
+                    Broken wallet
                 </Header>
                 {userStore.isLoggedIn ? (
                     <>
-                        <Header as='h2' inverted content='Welcome to Reactivities'/>
+                        <Header as='h2' inverted content='Click here!'/>
                         <Button as={Link} to='/activities' size='huge' inverted>
-                            Go to Activities!
+                            Go to Broken wallet!
                          </Button>
                     </>
                 ) : (

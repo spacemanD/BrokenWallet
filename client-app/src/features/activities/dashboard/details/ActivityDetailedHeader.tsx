@@ -44,7 +44,7 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                                 />
                                 <p>{format(activity.date!,'dd MMM yyyy')}</p>
                                 <p>
-                                    Hosted by <strong><Link to={`/profiles/${activity.host?.username}`}>{activity.host?.displayName}</Link></strong>
+                                    Created by <strong><Link to={`/profiles/${activity.host?.username}`}>{activity.host?.displayName}</Link></strong>
                                 </p>
                             </Item.Content>
                         </Item>
@@ -58,7 +58,7 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                         color={activity.isCancelled ? 'green' : 'red'}
                         floated='left'
                         basic
-                        content={activity.isCancelled ? 'Re-activate Activity' : 'Cancel activity' }
+                        content={activity.isCancelled ? 'Re-activate Activity' : 'Delete crypto' }
                         onClick={cancelactivityToggle}
                         loading={loading}
                     />
@@ -68,18 +68,18 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                         color='orange' 
                         floated='right'              
                     >
-                         Manage Event
+                        Update crypto
                     </Button>
                  </>
 
                 ) : activity.isGoing ? (
-                    <Button loading={loading} onClick={updateAttendance}>Cancel attendance</Button>
+                    <Button loading={loading} onClick={updateAttendance}>Cancel subcription</Button>
                 ) : (
                     <Button disabled={activity.isCancelled}
                         loading={loading}
                         onClick={updateAttendance}
                         color='teal'>
-                        Join Activity
+                        Subsribe on cripto
                     </Button>
                 )}
             </Segment>

@@ -10,13 +10,15 @@ export default observer(function NavBar(){
         <Menu inverted fixed='top'>
             <Container>
                 <Menu.Item as={NavLink} to='/' exact header>
-                 <img src="/assets/logo.png" alt="logo" style={{marginRight:'10px'}}/>
-                  Reactivities
+                 <img src="/assets/wallet.png" alt="logo" style={{marginRight:'10px'}}/>
+                  Broken Wallet
                 </Menu.Item>
-                <Menu.Item as={NavLink} to='/activities'name='Activities'/>
-                <Menu.Item as={NavLink} to='/errors'name='Errors'/>
+                <Menu.Item as={NavLink} to='/activities'name='Crypto'/>
                 <Menu.Item>
-                    <Button as={NavLink} to='/createActivity' positive content='Create Activity'/>
+                    <Button as={NavLink} to='/createActivity' positive content='Create crypto'/>
+                </Menu.Item>
+                <Menu.Item>
+                <Button as={NavLink} to='/buyVip' positive content='Buy Vip'/>
                 </Menu.Item>
                 <MenuItem position="right">
                     <Image src={user?.image || '/assets/user.png'} avatar spaced='right'/>
