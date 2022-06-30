@@ -9,7 +9,7 @@ namespace Persistence
         private static readonly Random _Random = new Random();
 
         private static UserManager<AppUser> _UserManager;
-        
+
         private static DataContext _Context;
 
         public static async Task SeedData(DataContext context,
@@ -17,232 +17,16 @@ namespace Persistence
         {
             _UserManager = userManager;
             _Context = context;
-            
-            var flag = userManager.Users.Any();
-            var users = flag ? userManager.Users.ToList() : await GetUsers();
-            if (!context.Activities.Any())
-            {
-                var activities = new List<Activity>
-                {
-                    new Activity
-                    {
-                        Title = "Past Activity 1",
-                        Date = DateTime.Now.AddMonths(-2),
-                        Description = "Activity 2 months ago",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true
-                            }
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Past Activity 2",
-                        Date = DateTime.Now.AddMonths(-1),
-                        Description = "Activity 1 month ago",
-                        Category = "culture",
-                        City = "Paris",
-                        Venue = "The Louvre",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 1",
-                        Date = DateTime.Now.AddMonths(1),
-                        Description = "Activity 1 month in future",
-                        Category = "music",
-                        City = "London",
-                        Venue = "Wembly Stadium",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 2",
-                        Date = DateTime.Now.AddMonths(2),
-                        Description = "Activity 2 months in future",
-                        Category = "food",
-                        City = "London",
-                        Venue = "Jamies Italian",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = false
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 3",
-                        Date = DateTime.Now.AddMonths(3),
-                        Description = "Activity 3 months in future",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = false
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 4",
-                        Date = DateTime.Now.AddMonths(4),
-                        Description = "Activity 4 months in future",
-                        Category = "culture",
-                        City = "London",
-                        Venue = "British Museum",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = true
-                            }
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 5",
-                        Date = DateTime.Now.AddMonths(5),
-                        Description = "Activity 5 months in future",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Punch and Judy",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 6",
-                        Date = DateTime.Now.AddMonths(6),
-                        Description = "Activity 6 months in future",
-                        Category = "music",
-                        City = "London",
-                        Venue = "O2 Arena",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 7",
-                        Date = DateTime.Now.AddMonths(7),
-                        Description = "Activity 7 months in future",
-                        Category = "travel",
-                        City = "Berlin",
-                        Venue = "All",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = false
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 8",
-                        Date = DateTime.Now.AddMonths(8),
-                        Description = "Activity 8 months in future",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false
-                            },
-                        }
-                    }
-                };
 
-                await context.Activities.AddRangeAsync(activities);
-                await context.SaveChangesAsync();
-            }
+            await GetCoins();
+            await GetUsers();
+
+            await _Context.SaveChangesAsync();
         }
 
         private static async Task<List<AppUser>> GetUsers()
         {
+            List<Subscription> subscriptions = await GetSubscriptions();
             List<AppUser> users;
             if (_UserManager.Users.Any())
             {
@@ -257,6 +41,7 @@ namespace Persistence
                         DisplayName = "Андрій Долгий",
                         UserName = "Overlord",
                         Email = "andrii.dolhyi@nure.ua",
+                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
                         IsAdmin = true,
                         IsBanned = false
                     },
@@ -265,6 +50,7 @@ namespace Persistence
                         DisplayName = "Дмитро Прокоп’єв",
                         UserName = "honest_expert47",
                         Email = "dmytro.prokopiev@nure.ua",
+                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
                         IsAdmin = true,
                         IsBanned = false
                     },
@@ -273,6 +59,7 @@ namespace Persistence
                         DisplayName = "Дмитро Зінченко",
                         UserName = "dimonfaraon",
                         Email = "dmytro.zinchenko1@nure.ua ",
+                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
                         IsAdmin = false,
                         IsBanned = false
                     },
@@ -281,6 +68,7 @@ namespace Persistence
                         DisplayName = "Олександр Олійник",
                         UserName = "AlexanderOleinik",
                         Email = "oleksandr.oliinyk3@nure.ua",
+                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
                         IsAdmin = false,
                         IsBanned = false
                     },
@@ -289,6 +77,7 @@ namespace Persistence
                         DisplayName = "Аліса Бондар",
                         UserName = "Lutierre",
                         Email = "alisa.bondar@nure.ua",
+                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
                         IsAdmin = false,
                         IsBanned = true
                     },
@@ -297,12 +86,13 @@ namespace Persistence
                         DisplayName = "Дмитро Васильєв",
                         UserName = "udvsharp",
                         Email = "dmytro.vasyliev@nure.ua",
+                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
                         IsAdmin = false,
                         IsBanned = true
                     }
                 };
-                
-                
+
+
                 foreach (var user in users)
                 {
                     await _UserManager.CreateAsync(user, "Pa$$w0rd");
@@ -345,6 +135,8 @@ namespace Persistence
                         Duration = TimeSpan.FromDays(365)
                     }
                 };
+
+                await _Context.Subscriptions.AddRangeAsync(subscriptions);
             }
 
             return subscriptions;
@@ -392,148 +184,11 @@ namespace Persistence
                         Code = "BTC"
                     }
                 };
+
+                await _Context.Coins.AddRangeAsync(coins);
             }
 
             return coins;
-        }
-        
-        private static async Task<List<Notification>> GetNotifications()
-        {
-            List<Notification> notifications;
-            List<AppUser> users = await GetUsers(); 
-            List<Coin> coins = await GetCoins(); 
-            if (_Context.Notifications.Any())
-            {
-                notifications = _Context.Notifications.ToList();
-            }
-            else
-            {
-                notifications = new List<Notification>
-                {
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    },
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    },                    
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    },
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    },
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    },
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                    ,
-                    new Notification
-                    {
-                        Receiver = users[(_Random.Next()%(users.Count-1))],
-                        Coin = coins[(_Random.Next()%(coins.Count-1))],
-                        Mode = (NotificationMode)(_Random.Next()%5+1)
-                    }
-                };
-            }
-
-            return notifications;
         }
     }
 }
