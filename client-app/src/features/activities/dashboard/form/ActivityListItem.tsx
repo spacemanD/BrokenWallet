@@ -24,19 +24,19 @@ export default function ActivityListItem({ activity }: Props) {
                             <Item.Header as={Link} to={`/activities/${activity.id}`}>
                                 {activity.title}
                             </Item.Header>
-                            <Item.Description>Hosted by <Link to={`/profiles/${activity.hostUsername}`}>{activity.host?.displayName}</Link>
+                            <Item.Description>Created by <Link to={`/profiles/${activity.hostUsername}`}>{activity.host?.displayName}</Link>
                             </Item.Description >
                             {activity?.isHost && (
                                 <Item.Description>
                                     <Label basic color='orange'>
-                                        You are hosting this activity
+                                        You created this crypto
                                     </Label>
                                 </Item.Description>
                             )}
                             {activity?.isGoing && !activity?.isHost && (
                                 <Item.Description>
                                     <Label basic color='green'>
-                                        You are going to this activity
+                                        You are following this crypto
                                     </Label>
                                 </Item.Description>
                             )}

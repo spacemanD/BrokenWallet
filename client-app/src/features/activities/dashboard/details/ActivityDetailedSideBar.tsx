@@ -20,7 +20,7 @@ export default observer(function ActivityDetailedSidebar ({activity :{attendees,
                 inverted
                 color='teal'
             >
-                {attendees.length} {attendees.length === 1 ? 'Person' : 'People'} going
+                {attendees.length} {attendees.length === 1 ? 'Person' : 'People'} subcribing
             </Segment>
             <Segment attached>
                 <List relaxed divided>
@@ -32,7 +32,7 @@ export default observer(function ActivityDetailedSidebar ({activity :{attendees,
                             color='orange'
                             ribbon='right'
                         >
-                            Host
+                            Admin
                         </Label>}
                         <Image size='tiny' src={attendee.image ||'/assets/user.png'} />
                         <Item.Content verticalAlign='middle'>
