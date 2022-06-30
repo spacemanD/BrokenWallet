@@ -1,5 +1,6 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
@@ -9,8 +10,8 @@ namespace Persistence
             UserManager<AppUser> userManager)
         {
             var flag = userManager.Users.Any();
-            var users = flag ? userManager.Users.ToList() : await GetUsers(userManager);
-            if(!context.Activities.Any())
+            var users = flag ? userManager.Users.ToList() : await GetUsers(userManager, context);
+            if (!context.Activities.Any())
             {
                 var activities = new List<Activity>
                 {
@@ -110,12 +111,12 @@ namespace Persistence
                             new ActivityAttendee
                             {
                                 AppUser = users[1],
-                                IsHost = true                            
+                                IsHost = true
                             },
                             new ActivityAttendee
                             {
                                 AppUser = users[0],
-                                IsHost = false                            
+                                IsHost = false
                             },
                         }
                     },
@@ -132,7 +133,7 @@ namespace Persistence
                             new ActivityAttendee
                             {
                                 AppUser = users[1],
-                                IsHost = true                            
+                                IsHost = true
                             }
                         }
                     },
@@ -149,12 +150,12 @@ namespace Persistence
                             new ActivityAttendee
                             {
                                 AppUser = users[0],
-                                IsHost = true                            
+                                IsHost = true
                             },
                             new ActivityAttendee
                             {
                                 AppUser = users[1],
-                                IsHost = false                            
+                                IsHost = false
                             },
                         }
                     },
@@ -171,12 +172,12 @@ namespace Persistence
                             new ActivityAttendee
                             {
                                 AppUser = users[2],
-                                IsHost = true                            
+                                IsHost = true
                             },
                             new ActivityAttendee
                             {
                                 AppUser = users[1],
-                                IsHost = false                            
+                                IsHost = false
                             },
                         }
                     },
@@ -193,12 +194,12 @@ namespace Persistence
                             new ActivityAttendee
                             {
                                 AppUser = users[0],
-                                IsHost = true                            
+                                IsHost = true
                             },
                             new ActivityAttendee
                             {
                                 AppUser = users[2],
-                                IsHost = false                            
+                                IsHost = false
                             },
                         }
                     },
@@ -215,81 +216,225 @@ namespace Persistence
                             new ActivityAttendee
                             {
                                 AppUser = users[2],
-                                IsHost = true                            
+                                IsHost = true
                             },
                             new ActivityAttendee
                             {
                                 AppUser = users[1],
-                                IsHost = false                            
+                                IsHost = false
                             },
                         }
                     }
                 };
+                
                 await context.Activities.AddRangeAsync(activities);
                 await context.SaveChangesAsync();
             }
         }
 
-        private static async Task<List<AppUser>> GetUsers(UserManager<AppUser> userManager)
+        private static async Task<List<AppUser>> GetUsers(UserManager<AppUser> userManager, DataContext context)
         {
+            
             var users = new List<AppUser>
             {
                 new AppUser
                 {
-                        DisplayName = "Bob",
-                        UserName = "bob",
-                        Email = "bob@test.com",
-                        CoinFollowings = new List<CoinFollowing>(){
-                            new CoinFollowing()
-                            {
-                                
-                            },
+                    DisplayName = "Андрій Долгий",
+                    UserName = "Overlord",
+                    Email = "andrii.dolhyi@nure.ua ",
+                    CoinFollowings = new List<CoinFollowing>()
+                    {
+                        new CoinFollowing()
+                        {
+                        },
+                    },
+                    Followings = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
                         }
-                },
-                    new AppUser
-                    {
-                        DisplayName = "Jane",
-                        UserName = "jane",
-                        Email = "jane@test.com"
                     },
-                    new AppUser
+                    Followers = new List<UserFollowing>
                     {
-                        DisplayName = "Tom",
-                        UserName = "tom",
-                        Email = "tom@test.com"
+                        new UserFollowing
+                        {
+                            
+                        }
                     },
-                };
-
-            foreach (var user in users)
-            {
-                await userManager.CreateAsync(user, "Pa$$w0rd");
-            }
-
-            return users;
-        }
-        
-        private static async Task<List<AppUser>> GetSubscriptions(UserManager<AppUser> userManager)
-        {
-            var subscriptions = new List<Subscription>
-            {
-                new Subscription
-                {
-                    Name = "Standard",
-                    Price = 0,
-                    Description = "Standard subscriptions for newbie"
+                    Notifications = new List<Notification>
+                    {
+                        new Notification
+                        {
+                            
+                        }
+                    }
                 },
-                new Subscription
+                new AppUser
                 {
-                    Name = "Premium",
-                    Price = 0,
-                    Description = "Standard subscriptions for newbie"
+                    DisplayName = "Андрій Долгий",
+                    UserName = "Overlord",
+                    Email = "andrii.dolhyi@nure.ua ",
+                    CoinFollowings = new List<CoinFollowing>()
+                    {
+                        new CoinFollowing()
+                        {
+                        },
+                    },
+                    Followings = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Followers = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Notifications = new List<Notification>
+                    {
+                        new Notification
+                        {
+                            
+                        }
+                    }
                 },
-                new Subscription
+                new AppUser
                 {
-                    Name = "Deluxe",
-                    Price = 0,
-                    Description = "Standard subscriptions for newbie"
+                    DisplayName = "Андрій Долгий",
+                    UserName = "Overlord",
+                    Email = "andrii.dolhyi@nure.ua ",
+                    CoinFollowings = new List<CoinFollowing>()
+                    {
+                        new CoinFollowing()
+                        {
+                        },
+                    },
+                    Followings = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Followers = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Notifications = new List<Notification>
+                    {
+                        new Notification
+                        {
+                            
+                        }
+                    }
                 },
+                new AppUser
+                {
+                    DisplayName = "Андрій Долгий",
+                    UserName = "Overlord",
+                    Email = "andrii.dolhyi@nure.ua ",
+                    CoinFollowings = new List<CoinFollowing>()
+                    {
+                        new CoinFollowing()
+                        {
+                        },
+                    },
+                    Followings = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Followers = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Notifications = new List<Notification>
+                    {
+                        new Notification
+                        {
+                            
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    DisplayName = "Андрій Долгий",
+                    UserName = "Overlord",
+                    Email = "andrii.dolhyi@nure.ua ",
+                    CoinFollowings = new List<CoinFollowing>()
+                    {
+                        new CoinFollowing()
+                        {
+                        },
+                    },
+                    Followings = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Followers = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Notifications = new List<Notification>
+                    {
+                        new Notification
+                        {
+                            
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    DisplayName = "Андрій Долгий",
+                    UserName = "Overlord",
+                    Email = "andrii.dolhyi@nure.ua ",
+                    CoinFollowings = new List<CoinFollowing>()
+                    {
+                        new CoinFollowing()
+                        {
+                        },
+                    },
+                    Followings = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Followers = new List<UserFollowing>
+                    {
+                        new UserFollowing
+                        {
+                            
+                        }
+                    },
+                    Notifications = new List<Notification>
+                    {
+                        new Notification
+                        {
+                            
+                        }
+                    }
+                }
             };
 
             foreach (var user in users)
@@ -299,5 +444,84 @@ namespace Persistence
 
             return users;
         }
+
+        private static async Task<List<Subscription>> GetSubscriptions()
+        {
+            var subscriptions = new List<Subscription>
+            {
+                new Subscription
+                {
+                    Name = "Standard",
+                    Price = 0,
+                    Description = "Standard subscription for newbie",
+                    Duration = TimeSpan.MaxValue
+                },
+                new Subscription
+                {
+                    Name = "Premium for month",
+                    Price = 9.99m,
+                    Description = "Premium subscription for month for the custom audience",
+                    Duration = TimeSpan.FromDays(30)
+                },
+                new Subscription
+                {
+                    Name = "Premium for year",
+                    Price = 99.99m,
+                    Description = "Premium subscription for year for the regular audience",
+                    Duration = TimeSpan.FromDays(365)
+                }
+            };
+
+            return subscriptions;
+        }
+
+        private static async Task<List<Coin>> GetCoins(DataContext context)
+        {
+            List<Coin> coins;
+            if (context.Coins.Any())
+            {
+                coins = context.Coins.ToList();
+            }
+            else
+            {
+                coins = new List<Coin>
+                {
+                    new Coin
+                    {
+                        Identifier = "",
+                        DisplayName = "Dogecoin",
+                        Code = "DOGE"
+                    },
+                    new Coin
+                    {
+                        Identifier = "",
+                        DisplayName = "Ethereum",
+                        Code = "ETH"
+                    },
+                    new Coin
+                    {
+                        Identifier = "",
+                        DisplayName = "Tether",
+                        Code = "USDT"
+                    },
+                    new Coin
+                    {
+                        Identifier = "",
+                        DisplayName = "Cardano",
+                        Code = "ADA"
+                    },
+                    new Coin
+                    {
+                        Identifier = "",
+                        DisplayName = "Bitcoin",
+                        Code = "BTC"
+                    }
+                };
+            }
+            
+
+            return coins;
+        }
+
     }
 }
