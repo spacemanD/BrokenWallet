@@ -14,6 +14,7 @@ export default observer(function NavBar(){
                   Broken Wallet
                 </Menu.Item>
                 <Menu.Item as={NavLink} to='/activities'name='Crypto'/>
+                <Menu.Item as={NavLink} to='/coins'name='Crypto List'/>
                 <Menu.Item>
                     <Button as={NavLink} to='/createActivity' positive content='Create crypto'/>
                 </Menu.Item>

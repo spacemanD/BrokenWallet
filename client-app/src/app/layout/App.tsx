@@ -16,6 +16,9 @@ import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
 import ProfilePage from '../../features/profiles/ProfilePage';
 import PrivateRoute from './PrivateRoute';
+import MarketProvider from '../../store/MarketProvider';
+import Market from '../../containers/Market';
+import Coins from '../../containers/Coins';
 
 function App() {
   const location = useLocation();
@@ -49,6 +52,14 @@ function App() {
                 <PrivateRoute path='/profiles/:username' component={ProfilePage}/>
                 <PrivateRoute path='/errors' component={TestErrors}/>
                 <Route path='/server-error' component={ServerError}/>
+                <Route exact path="/market">
+                  <MarketProvider>
+                    <Market />
+                  </MarketProvider>
+                </Route>
+                <Route exact path="/coins">
+                  <Coins />
+                </Route>
                 <Route component={NotFound} />
                 </Switch>
               </Container>
