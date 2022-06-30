@@ -1,5 +1,4 @@
 using Domain.Entities;
-using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
