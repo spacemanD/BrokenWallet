@@ -12,6 +12,6 @@
 
         public TimeSpan Duration { get; set; }
 
-        public ICollection<AppUser> Subscriber { get; set; }
+        public ICollection<AppUser> Subscribers { get; set; }
     }
 }

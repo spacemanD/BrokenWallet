@@ -4,8 +4,6 @@ namespace Domain.Entities
 {
     public class Notification
     {
-        public Guid Id { get; set; }
-        
         public Guid CoinId { get; set; }
 
         public Coin Coin { get; set; }
