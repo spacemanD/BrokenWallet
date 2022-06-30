@@ -4,33 +4,33 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
-    public class Seed
+    public static class Seed
     {
         private static readonly Random _Random = new Random();
 
-        private static UserManager<AppUser> _UserManager;
+        private static UserManager<AppUser> _userManager;
 
-        private static DataContext _Context;
+        private static DataContext _context;
 
         public static async Task SeedData(DataContext context,
             UserManager<AppUser> userManager)
         {
-            _UserManager = userManager;
-            _Context = context;
+            _userManager = userManager;
+            _context = context;
 
             await GetCoins();
             await GetUsers();
 
-            await _Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         private static async Task<List<AppUser>> GetUsers()
         {
             List<Subscription> subscriptions = await GetSubscriptions();
             List<AppUser> users;
-            if (_UserManager.Users.Any())
+            if (_userManager.Users.Any())
             {
-                users = _UserManager.Users.ToList();
+                users = _userManager.Users.ToList();
             }
             else
             {
@@ -95,7 +95,7 @@ namespace Persistence
 
                 foreach (var user in users)
                 {
-                    await _UserManager.CreateAsync(user, "Pa$$w0rd");
+                    await _userManager.CreateAsync(user, "Pa$$w0rd");
                 }
             }
 
@@ -105,9 +105,9 @@ namespace Persistence
         private static async Task<List<Subscription>> GetSubscriptions()
         {
             List<Subscription> subscriptions;
-            if (_Context.Subscriptions.Any())
+            if (_context.Subscriptions.Any())
             {
-                subscriptions = _Context.Subscriptions.ToList();
+                subscriptions = _context.Subscriptions.ToList();
             }
             else
             {
@@ -136,7 +136,7 @@ namespace Persistence
                     }
                 };
 
-                await _Context.Subscriptions.AddRangeAsync(subscriptions);
+                await _context.Subscriptions.AddRangeAsync(subscriptions);
             }
 
             return subscriptions;
@@ -145,9 +145,9 @@ namespace Persistence
         private static async Task<List<Coin>> GetCoins()
         {
             List<Coin> coins;
-            if (_Context.Coins.Any())
+            if (_context.Coins.Any())
             {
-                coins = _Context.Coins.ToList();
+                coins = _context.Coins.ToList();
             }
             else
             {
@@ -185,7 +185,7 @@ namespace Persistence
                     }
                 };
 
-                await _Context.Coins.AddRangeAsync(coins);
+                await _context.Coins.AddRangeAsync(coins);
             }
 
             return coins;
