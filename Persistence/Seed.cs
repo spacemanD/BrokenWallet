@@ -1,16 +1,25 @@
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
     public class Seed
     {
+        private static readonly Random _Random = new Random();
+
+        private static UserManager<AppUser> _UserManager;
+        
+        private static DataContext _Context;
+
         public static async Task SeedData(DataContext context,
             UserManager<AppUser> userManager)
         {
+            _UserManager = userManager;
+            _Context = context;
+            
             var flag = userManager.Users.Any();
-            var users = flag ? userManager.Users.ToList() : await GetUsers(userManager, context);
+            var users = flag ? userManager.Users.ToList() : await GetUsers();
             if (!context.Activities.Any())
             {
                 var activities = new List<Activity>
@@ -226,220 +235,78 @@ namespace Persistence
                         }
                     }
                 };
-                
+
                 await context.Activities.AddRangeAsync(activities);
                 await context.SaveChangesAsync();
             }
         }
 
-        private static async Task<List<AppUser>> GetUsers(UserManager<AppUser> userManager, DataContext context)
+        private static async Task<List<AppUser>> GetUsers()
         {
-            
-            var users = new List<AppUser>
+            List<AppUser> users;
+            if (_UserManager.Users.Any())
             {
-                new AppUser
+                users = _UserManager.Users.ToList();
+            }
+            else
+            {
+                users = new List<AppUser>
                 {
-                    DisplayName = "Андрій Долгий",
-                    UserName = "Overlord",
-                    Email = "andrii.dolhyi@nure.ua ",
-                    CoinFollowings = new List<CoinFollowing>()
+                    new AppUser
                     {
-                        new CoinFollowing()
-                        {
-                        },
+                        DisplayName = "Андрій Долгий",
+                        UserName = "Overlord",
+                        Email = "andrii.dolhyi@nure.ua",
+                        IsAdmin = true,
+                        IsBanned = false
                     },
-                    Followings = new List<UserFollowing>
+                    new AppUser
                     {
-                        new UserFollowing
-                        {
-                            
-                        }
+                        DisplayName = "Дмитро Прокоп’єв",
+                        UserName = "honest_expert47",
+                        Email = "dmytro.prokopiev@nure.ua",
+                        IsAdmin = true,
+                        IsBanned = false
                     },
-                    Followers = new List<UserFollowing>
+                    new AppUser
                     {
-                        new UserFollowing
-                        {
-                            
-                        }
+                        DisplayName = "Дмитро Зінченко",
+                        UserName = "dimonfaraon",
+                        Email = "dmytro.zinchenko1@nure.ua ",
+                        IsAdmin = false,
+                        IsBanned = false
                     },
-                    Notifications = new List<Notification>
+                    new AppUser
                     {
-                        new Notification
-                        {
-                            
-                        }
+                        DisplayName = "Олександр Олійник",
+                        UserName = "AlexanderOleinik",
+                        Email = "oleksandr.oliinyk3@nure.ua",
+                        IsAdmin = false,
+                        IsBanned = false
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Аліса Бондар",
+                        UserName = "Lutierre",
+                        Email = "alisa.bondar@nure.ua",
+                        IsAdmin = false,
+                        IsBanned = true
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Дмитро Васильєв",
+                        UserName = "udvsharp",
+                        Email = "dmytro.vasyliev@nure.ua",
+                        IsAdmin = false,
+                        IsBanned = true
                     }
-                },
-                new AppUser
+                };
+                
+                
+                foreach (var user in users)
                 {
-                    DisplayName = "Андрій Долгий",
-                    UserName = "Overlord",
-                    Email = "andrii.dolhyi@nure.ua ",
-                    CoinFollowings = new List<CoinFollowing>()
-                    {
-                        new CoinFollowing()
-                        {
-                        },
-                    },
-                    Followings = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Followers = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Notifications = new List<Notification>
-                    {
-                        new Notification
-                        {
-                            
-                        }
-                    }
-                },
-                new AppUser
-                {
-                    DisplayName = "Андрій Долгий",
-                    UserName = "Overlord",
-                    Email = "andrii.dolhyi@nure.ua ",
-                    CoinFollowings = new List<CoinFollowing>()
-                    {
-                        new CoinFollowing()
-                        {
-                        },
-                    },
-                    Followings = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Followers = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Notifications = new List<Notification>
-                    {
-                        new Notification
-                        {
-                            
-                        }
-                    }
-                },
-                new AppUser
-                {
-                    DisplayName = "Андрій Долгий",
-                    UserName = "Overlord",
-                    Email = "andrii.dolhyi@nure.ua ",
-                    CoinFollowings = new List<CoinFollowing>()
-                    {
-                        new CoinFollowing()
-                        {
-                        },
-                    },
-                    Followings = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Followers = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Notifications = new List<Notification>
-                    {
-                        new Notification
-                        {
-                            
-                        }
-                    }
-                },
-                new AppUser
-                {
-                    DisplayName = "Андрій Долгий",
-                    UserName = "Overlord",
-                    Email = "andrii.dolhyi@nure.ua ",
-                    CoinFollowings = new List<CoinFollowing>()
-                    {
-                        new CoinFollowing()
-                        {
-                        },
-                    },
-                    Followings = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Followers = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Notifications = new List<Notification>
-                    {
-                        new Notification
-                        {
-                            
-                        }
-                    }
-                },
-                new AppUser
-                {
-                    DisplayName = "Андрій Долгий",
-                    UserName = "Overlord",
-                    Email = "andrii.dolhyi@nure.ua ",
-                    CoinFollowings = new List<CoinFollowing>()
-                    {
-                        new CoinFollowing()
-                        {
-                        },
-                    },
-                    Followings = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Followers = new List<UserFollowing>
-                    {
-                        new UserFollowing
-                        {
-                            
-                        }
-                    },
-                    Notifications = new List<Notification>
-                    {
-                        new Notification
-                        {
-                            
-                        }
-                    }
+                    await _UserManager.CreateAsync(user, "Pa$$w0rd");
                 }
-            };
-
-            foreach (var user in users)
-            {
-                await userManager.CreateAsync(user, "Pa$$w0rd");
             }
 
             return users;
@@ -447,40 +314,48 @@ namespace Persistence
 
         private static async Task<List<Subscription>> GetSubscriptions()
         {
-            var subscriptions = new List<Subscription>
+            List<Subscription> subscriptions;
+            if (_Context.Subscriptions.Any())
             {
-                new Subscription
+                subscriptions = _Context.Subscriptions.ToList();
+            }
+            else
+            {
+                subscriptions = new List<Subscription>
                 {
-                    Name = "Standard",
-                    Price = 0,
-                    Description = "Standard subscription for newbie",
-                    Duration = TimeSpan.MaxValue
-                },
-                new Subscription
-                {
-                    Name = "Premium for month",
-                    Price = 9.99m,
-                    Description = "Premium subscription for month for the custom audience",
-                    Duration = TimeSpan.FromDays(30)
-                },
-                new Subscription
-                {
-                    Name = "Premium for year",
-                    Price = 99.99m,
-                    Description = "Premium subscription for year for the regular audience",
-                    Duration = TimeSpan.FromDays(365)
-                }
-            };
+                    new Subscription
+                    {
+                        Name = "Standard",
+                        Price = 0,
+                        Description = "Standard subscription for newbie",
+                        Duration = TimeSpan.MaxValue
+                    },
+                    new Subscription
+                    {
+                        Name = "Premium for month",
+                        Price = 9.99m,
+                        Description = "Premium subscription for month for the custom audience",
+                        Duration = TimeSpan.FromDays(30)
+                    },
+                    new Subscription
+                    {
+                        Name = "Premium for year",
+                        Price = 99.99m,
+                        Description = "Premium subscription for year for the regular audience",
+                        Duration = TimeSpan.FromDays(365)
+                    }
+                };
+            }
 
             return subscriptions;
         }
 
-        private static async Task<List<Coin>> GetCoins(DataContext context)
+        private static async Task<List<Coin>> GetCoins()
         {
             List<Coin> coins;
-            if (context.Coins.Any())
+            if (_Context.Coins.Any())
             {
-                coins = context.Coins.ToList();
+                coins = _Context.Coins.ToList();
             }
             else
             {
@@ -518,10 +393,63 @@ namespace Persistence
                     }
                 };
             }
-            
 
             return coins;
         }
+        
+        private static async Task<List<Notification>> GetNotifications()
+        {
+            List<Notification> notifications;
+            List<AppUser> users = await GetUsers(); 
+            List<Coin> coins = await GetCoins(); 
+            if (_Context.Notifications.Any())
+            {
+                notifications = _Context.Notifications.ToList();
+            }
+            else
+            {
+                notifications = new List<Notification>
+                {
+                    new Notification
+                    {
+                        Receiver = users[(_Random%)],
+                        Coin = coins[0],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    },
+                    new Notification
+                    {
+                        Receiver = users[0],
+                        Coin = coins[0],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    },                    
+                    new Notification
+                    {
+                        Receiver = users[0],
+                        Coin = coins[0],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    },
+                    new Notification
+                    {
+                        Receiver = users[0],
+                        Coin = coins[0],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    },
+                    new Notification
+                    {
+                        Receiver = users[0],
+                        Coin = coins[0],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    },
+                    new Notification
+                    {
+                        Receiver = users[0],
+                        Coin = coins[0],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                };
+            }
 
+            return coins;
+        }
     }
 }
