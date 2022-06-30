@@ -7,6 +7,8 @@ namespace Domain.Entities
         public string DisplayName { get; set; }
 
         public string Bio { get; set; }
+        
+        public Guid SubscriptionId { get; set; }
 
         public Subscription Subscription { get; set; }
         
