@@ -238,8 +238,14 @@ namespace Persistence
                 {
                         DisplayName = "Bob",
                         UserName = "bob",
-                        Email = "bob@test.com"
-                    },
+                        Email = "bob@test.com",
+                        CoinFollowings = new List<CoinFollowing>(){
+                            new CoinFollowing()
+                            {
+                                
+                            },
+                        }
+                },
                     new AppUser
                     {
                         DisplayName = "Jane",
@@ -253,6 +259,38 @@ namespace Persistence
                         Email = "tom@test.com"
                     },
                 };
+
+            foreach (var user in users)
+            {
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+            }
+
+            return users;
+        }
+        
+        private static async Task<List<AppUser>> GetSubscriptions(UserManager<AppUser> userManager)
+        {
+            var subscriptions = new List<Subscription>
+            {
+                new Subscription
+                {
+                    Name = "Standard",
+                    Price = 0,
+                    Description = "Standard subscriptions for newbie"
+                },
+                new Subscription
+                {
+                    Name = "Premium",
+                    Price = 0,
+                    Description = "Standard subscriptions for newbie"
+                },
+                new Subscription
+                {
+                    Name = "Deluxe",
+                    Price = 0,
+                    Description = "Standard subscriptions for newbie"
+                },
+            };
 
             foreach (var user in users)
             {
