@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Interfaces;
 using Application.Photos;
 using CloudinaryDotNet;
@@ -14,6 +10,7 @@ namespace Infrastructure.Photos
     public class PhotoAccessor : IPhotoAccessor
     {
         private readonly Cloudinary _cloudinary;
+        
         public PhotoAccessor(IOptions<CloudinarySettings> config)
         {
             var account = new Account (
@@ -56,7 +53,7 @@ namespace Infrastructure.Photos
         {
             var deleteParams = new DeletionParams(publicId);
             var result = await _cloudinary.DestroyAsync(deleteParams);
-            return result.Result == "ok" ? result.Result : null;
+            return (result.Result == "ok" ? result.Result : null)!;
         }
     }
 }

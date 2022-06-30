@@ -20,7 +20,7 @@ namespace API.SignalR
         {
             var comment = await mediator.Send(command);
 
-            await Clients.Group(command.ActivityId.ToString())
+            await Clients.Group(command.CoinId.ToString())
                 .SendAsync("ReceiveComment", comment.Value);
         }
 
@@ -29,7 +29,7 @@ namespace API.SignalR
             var httpContext = Context.GetHttpContext();
             var activityId = httpContext.Request.Query["activityId"];
             await Groups.AddToGroupAsync(Context.ConnectionId, activityId);
-            var result = await mediator.Send(new List.Query{ActivityId = Guid.Parse(activityId)});
+            var result = await mediator.Send(new List.Query{CoinId = Guid.Parse(activityId)});
             await Clients.Caller.SendAsync("LoadComments", result.Value);
         }
     }

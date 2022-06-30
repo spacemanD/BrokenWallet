@@ -18,6 +18,8 @@ namespace Persistence
 
         public DbSet<Notification> Notifications { get; set; }
 
+        public DbSet<Subscription> Subscriptions { get; set; }
+
         public DataContext(DbContextOptions options) : base(options)
         {
         }
@@ -64,12 +66,6 @@ namespace Persistence
                     .HasForeignKey(userFollowing => userFollowing.TargetId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
-
-            builder.Entity<Notification>(options =>
-                options.HasKey(notification => new
-                {
-                    notification.ReceiverId, notification.CoinId
-                }));
 
             builder.Entity<Notification>()
                 .HasOne(notification => notification.Receiver)
