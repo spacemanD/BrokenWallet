@@ -12,13 +12,11 @@ namespace Domain.Entities
         
         public ICollection<Photo> Photos { get; set; }
         
+        public ICollection<CoinFollowing> CoinFollowings { get; set; }
+
         public ICollection<UserFollowing> Followings { get; set; }
         
         public ICollection<UserFollowing> Followers { get; set; }
-        
-        public ICollection<ActivityAttendee> Activities { get; set; }
-        
-        public ICollection<CoinFollowing> CoinFollowings { get; set; }
         
         public ICollection<Notification> Notifications { get; set; }
     }

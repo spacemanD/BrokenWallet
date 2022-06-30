@@ -12,6 +12,7 @@ namespace Persistence
 
         public DbSet<Activity> Activities { get; set; }
 
+        public DbSet<CoinFollowing> CoinFollowings { get; set; }
         public DbSet<ActivityAttendee> ActivityAttendees { get; set; }
 
         public DbSet<Photo> Photos { get; set;}
@@ -24,6 +25,9 @@ namespace Persistence
         {
             base.OnModelCreating(builder);
 
+            builder
+                .Entity<CoinFollowing>(entity =>
+                    entity.HasKey(options => new {options.AppUserId, options.CoinId}))
             builder.Entity<ActivityAttendee>(x => x.HasKey(aa => new {aa.AppUserId, aa.ActivityId}));
 
             builder.Entity<ActivityAttendee>()

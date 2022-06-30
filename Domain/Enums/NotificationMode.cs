@@ -2,10 +2,10 @@
 {
     public enum NotificationMode
     {
-        FallenHard = 1,
-        FallenSoft = 2,
+        Fallen = 1,
+        Falling = 2,
         WithoutChanges = 3,
-        GrownSoft = 4,
-        GrownHard = 5
+        Growing = 4,
+        Grown = 5
     }
 }
