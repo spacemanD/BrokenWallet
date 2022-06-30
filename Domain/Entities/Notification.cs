@@ -13,6 +13,8 @@ namespace Domain.Entities
         public string ReceiverId { get; set; }
         
         public AppUser Receiver { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         
         public NotificationMode Mode { get; set; }
     }
