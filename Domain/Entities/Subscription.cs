@@ -10,10 +10,8 @@
 
         public string Description { get; set; }
 
-        public DateTime DateExpired { get; set; }
+        public TimeSpan Duration { get; set; }
 
-        public Guid SubdcriberId { get; set; }
-
-        public AppUser Subscriber { get; set; }
+        public ICollection<AppUser> Subscriber { get; set; }
     }
 }
