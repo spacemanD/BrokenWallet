@@ -412,44 +412,128 @@ namespace Persistence
                 {
                     new Notification
                     {
-                        Receiver = users[(_Random%)],
-                        Coin = coins[0],
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
                         Mode = (NotificationMode)(_Random.Next()%5+1)
                     },
                     new Notification
                     {
-                        Receiver = users[0],
-                        Coin = coins[0],
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
                         Mode = (NotificationMode)(_Random.Next()%5+1)
                     },                    
                     new Notification
                     {
-                        Receiver = users[0],
-                        Coin = coins[0],
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
                         Mode = (NotificationMode)(_Random.Next()%5+1)
                     },
                     new Notification
                     {
-                        Receiver = users[0],
-                        Coin = coins[0],
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
                         Mode = (NotificationMode)(_Random.Next()%5+1)
                     },
                     new Notification
                     {
-                        Receiver = users[0],
-                        Coin = coins[0],
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
                         Mode = (NotificationMode)(_Random.Next()%5+1)
                     },
                     new Notification
                     {
-                        Receiver = users[0],
-                        Coin = coins[0],
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
+                        Mode = (NotificationMode)(_Random.Next()%5+1)
+                    }
+                    ,
+                    new Notification
+                    {
+                        Receiver = users[(_Random.Next()%(users.Count-1))],
+                        Coin = coins[(_Random.Next()%(coins.Count-1))],
                         Mode = (NotificationMode)(_Random.Next()%5+1)
                     }
                 };
             }
 
-            return coins;
+            return notifications;
         }
     }
 }
