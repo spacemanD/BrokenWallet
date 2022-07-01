@@ -12,8 +12,6 @@ namespace Domain.Entities
 
         public bool IsBanned { get; set; }
 
-        public Guid SubscriptionId { get; set; }
-
         public Subscription Subscription { get; set; }
 
         public ICollection<Photo> Photos { get; set; }

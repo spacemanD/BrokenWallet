@@ -142,60 +142,70 @@ namespace Persistence
                 {
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "dogecoin",
                         DisplayName = "Dogecoin",
                         Code = "DOGE"
                     },
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "ethereum",
                         DisplayName = "Ethereum",
                         Code = "ETH"
                     },
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "tether",
                         DisplayName = "Tether",
                         Code = "USDT"
                     },
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "cardano",
                         DisplayName = "Cardano",
                         Code = "ADA"
                     },
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "bitcoin",
                         DisplayName = "Bitcoin",
                         Code = "BTC"
                     },
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "usd-coin",
                         DisplayName = "USD Coin",
                         Code = "USDC"
                     },
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "polkadot",
                         DisplayName = "BNB",
                         Code = "BNB"
                     },
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "binancecoin",
                         DisplayName = "Polkadot",
                         Code = "DOT"
                     },
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "solana",
                         DisplayName = "Solana",
                         Code = "SOL"
                     },
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Identifier = "ripple",
                         DisplayName = "XRP",
                         Code = "XRP"

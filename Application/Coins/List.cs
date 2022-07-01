@@ -31,23 +31,26 @@ namespace Application.Coins
             public async Task<Result<PagedList<CoinDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var query = _context.Coins
-                    .Include(coin => coin.Notifications)
-                    .Where(coin => coin.Notifications.Last().CreatedAt >= request.Params.StartDate)
+                    .Include(coin => coin.Comments)
+                    .Include(coin => coin.Followers)
                     .ProjectTo<CoinDto>(_mapper.ConfigurationProvider, new { currentUsername = _userAccessor.GetUserName() })
                     .AsQueryable();
 
-                if (request.Params.IsAscending)
+                query = request.Params.Predicate switch
                 {
-                    query = query.OrderBy(coin => coin.Code);
-                }
+                    "popular" => query.OrderByDescending(coin => coin.Followers.Count),
+                    "trending" => query.OrderByDescending(coin => coin.MessagesCount),
+                    _ => query
+                };
 
                 if (!string.IsNullOrEmpty(request.Params.CoinName))
                 {
-                    query = query.Where(coin => coin.DisplayName.Contains(request.Params.CoinName));
+                    query = query.Where(coin =>
+                        coin.DisplayName.ToLower().Contains(request.Params.CoinName.ToLower()));
                 }
 
                 var pagedList = await PagedList<CoinDto>.CreateAsync(query, request.Params.PageNumber, request.Params.PageSize);
-                
+
                 return Result<PagedList<CoinDto>>.Success(pagedList);
             }
         }

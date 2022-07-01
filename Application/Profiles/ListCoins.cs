@@ -38,8 +38,8 @@ namespace Application.Profiles
 
                 query = request.Predicate switch
                 {
-                    "popular" => query.OrderByDescending(userCoin => userCoin.SubscribersCount),
-                    "trending" => query.OrderByDescending(userCoin => userCoin.CommentsCount),
+                    "popular" => query.OrderByDescending(userCoin => userCoin.SubscribersCount).Take(10),
+                    "trending" => query.OrderByDescending(userCoin => userCoin.CommentsCount).Take(10),
                     _ => query
                 };
 

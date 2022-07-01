@@ -13,7 +13,8 @@ namespace Application.Core
 
             CreateMap<Coin, Coin>();
 
-            CreateMap<Coin, CoinDto>();
+            CreateMap<Coin, CoinDto>()
+                .ForMember(coinDto => coinDto.MessagesCount, options => options.MapFrom(coin => coin.Comments.Count));
 
             CreateMap<CoinFollowing, FollowerDto>()
                 .ForMember(follower => follower.DisplayName, options => options.MapFrom(following => following.AppUser.DisplayName))

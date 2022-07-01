@@ -2,7 +2,7 @@ namespace Domain.Entities
 {
     public class Comment
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         
         public string Body { get; set; }
         

@@ -94,7 +94,7 @@ namespace API.Controllers
             return new UserDto
             {
                 DisplayName = appUser.DisplayName,
-                Image = appUser?.Photos?.FirstOrDefault(x => x.IsMain)?.Url,
+                Image = appUser?.Photos?.FirstOrDefault(photo => photo.IsMain)?.Url,
                 Username = appUser.UserName,
                 Token = _tokenService.CreateToken(appUser)
             };
