@@ -6,9 +6,9 @@ import { UserActivity } from '../../app/models/profile';
 import { format } from 'date-fns';
 import { useStore } from "../../app/stores/store";
 const panes = [
-    { menuItem: 'Future Events', pane: { key: 'future' } },
-    { menuItem: 'Past Events', pane: { key: 'past' } },
-    { menuItem: 'Hosting', pane: { key: 'hosting' } }
+    { menuItem: 'Expensive', pane: { key: 'future' } },
+    { menuItem: 'Cheap', pane: { key: 'past' } },
+    { menuItem: 'All', pane: { key: 'hosting' } }
 ];
 export default observer(function ProfileActivities() {
     const { profileStore } = useStore();
