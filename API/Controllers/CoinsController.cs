@@ -43,8 +43,8 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
         }
 
-        [HttpPost("{id:guid}/attend")]
-        public async Task<IActionResult> Attend(Guid id)
+        [HttpPost("{id:guid}/track")]
+        public async Task<IActionResult> Track(Guid id)
         {
             return HandleResult(await Mediator.Send(new UpdateFollowing.Command { Id = id }));
         }
