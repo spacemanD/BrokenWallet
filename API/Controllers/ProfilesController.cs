@@ -19,8 +19,8 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Edit.Command { Profile = profile }));
         }
 
-        [HttpGet("{username}/activities")]
-        public async Task<IActionResult> GetProfileActivities(string username, string predicate)
+        [HttpGet("{username}/coins")]
+        public async Task<IActionResult> GetProfileCoins(string username, string predicate)
         {
             return HandleResult(await Mediator.Send(new ListCoins.Query
             {
