@@ -28,20 +28,17 @@ namespace API
                 await context.Database.MigrateAsync();
                 await Seed.SeedData(context, userManager);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
                 var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(e, "Exception");
+                logger.LogError(exception, "Exception");
             }
 
             await host.RunAsync();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }
