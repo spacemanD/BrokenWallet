@@ -2,10 +2,14 @@
 using Application.Activities;
 using Application.Core;
 using Application.Interfaces;
+using Domain;
+using Infrastructure.Interfaces;
 using Infrastructure.Photos;
 using Infrastructure.Security;
+using Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,7 +83,12 @@ namespace API.Extensions
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddIdentityCore<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<DataContext>()
+                .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
             services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
+            services.Configure<SmtpSettings>(configuration.GetSection("Smtp"));
             services.AddSignalR();
 
             return services;

@@ -16,7 +16,10 @@ body {
   width: 100%;
 }
 /*home page styles*/
-
+li {
+  list-style-type: none;
+  /* Убираем маркеры */
+}
 .masthead {
   display: flex;
   align-items: center;
