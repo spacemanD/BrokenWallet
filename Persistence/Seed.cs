@@ -1,19 +1,18 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
     public static class Seed
     {
-        private static readonly Random _Random = new Random();
-
+        private static Random _random;
         private static UserManager<AppUser> _userManager;
-
         private static DataContext _context;
 
-        public static async Task SeedData(DataContext context,
-            UserManager<AppUser> userManager)
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
+            _random = new Random();
             _userManager = userManager;
             _context = context;
 
@@ -23,110 +22,104 @@ namespace Persistence
             await _context.SaveChangesAsync();
         }
 
-        private static async Task<List<AppUser>> GetUsers()
+        private static async Task GetUsers()
         {
-            List<Subscription> subscriptions = await GetSubscriptions();
-            List<AppUser> users;
-            if (_userManager.Users.Any())
+            var subscriptions = await GetSubscriptions();
+
+            if (!_userManager.Users.Any())
             {
-                users = _userManager.Users.ToList();
-            }
-            else
-            {
-                users = new List<AppUser>
+                var users = new List<AppUser>
                 {
-                    new AppUser
+                    new()
                     {
-                        DisplayName = "Андрій Долгий",
+                        DisplayName = "Andrii Dolhyi",
                         UserName = "Overlord",
                         Email = "andrii.dolhyi@nure.ua",
-                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
                         IsAdmin = true,
                         IsBanned = false
                     },
-                    new AppUser
+                    new()
                     {
-                        DisplayName = "Дмитро Прокоп’єв",
+                        DisplayName = "Dmytro Prokopiev",
                         UserName = "honest_expert47",
                         Email = "dmytro.prokopiev@nure.ua",
-                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
                         IsAdmin = true,
                         IsBanned = false
                     },
-                    new AppUser
+                    new()
                     {
-                        DisplayName = "Дмитро Зінченко",
+                        DisplayName = "Dmytro Zinchenko",
                         UserName = "dimonfaraon",
                         Email = "dmytro.zinchenko1@nure.ua ",
-                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
                         IsAdmin = false,
                         IsBanned = false
                     },
-                    new AppUser
+                    new()
                     {
-                        DisplayName = "Олександр Олійник",
+                        DisplayName = "Oleksandr Oliinyk",
                         UserName = "AlexanderOleinik",
                         Email = "oleksandr.oliinyk3@nure.ua",
-                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
                         IsAdmin = false,
                         IsBanned = false
                     },
-                    new AppUser
+                    new()
                     {
-                        DisplayName = "Аліса Бондар",
+                        DisplayName = "Alisa Bondar",
                         UserName = "Lutierre",
                         Email = "alisa.bondar@nure.ua",
-                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
                         IsAdmin = false,
                         IsBanned = true
                     },
-                    new AppUser
+                    new()
                     {
-                        DisplayName = "Дмитро Васильєв",
+                        DisplayName = "Dmytro Vasyliev",
                         UserName = "udvsharp",
                         Email = "dmytro.vasyliev@nure.ua",
-                        Subscription = subscriptions[(_Random.Next() % (subscriptions.Count - 1))],
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
                         IsAdmin = false,
                         IsBanned = true
                     }
                 };
-
 
                 foreach (var user in users)
                 {
                     await _userManager.CreateAsync(user, "Pa$$w0rd");
                 }
             }
-
-            return users;
         }
 
         private static async Task<List<Subscription>> GetSubscriptions()
         {
             List<Subscription> subscriptions;
+
             if (_context.Subscriptions.Any())
             {
-                subscriptions = _context.Subscriptions.ToList();
+                subscriptions = await _context.Subscriptions.ToListAsync();
             }
             else
             {
                 subscriptions = new List<Subscription>
                 {
-                    new Subscription
+                    new()
                     {
                         Name = "Standard",
                         Price = 0,
                         Description = "Standard subscription for newbie",
                         Duration = TimeSpan.MaxValue
                     },
-                    new Subscription
+                    new()
                     {
                         Name = "Premium for month",
                         Price = 9.99m,
                         Description = "Premium subscription for month for the custom audience",
                         Duration = TimeSpan.FromDays(30)
                     },
-                    new Subscription
+                    new()
                     {
                         Name = "Premium for year",
                         Price = 99.99m,
@@ -141,72 +134,67 @@ namespace Persistence
             return subscriptions;
         }
 
-        private static async Task<List<Coin>> GetCoins()
+        private static async Task GetCoins()
         {
-            List<Coin> coins;
-            if (_context.Coins.Any())
+            if (!_context.Coins.Any())
             {
-                coins = _context.Coins.ToList();
-            }
-            else
-            {
-                coins = new List<Coin>
+                var coins = new List<Coin>
                 {
-                    new Coin
+                    new()
                     {
                         Identifier = "dogecoin",
                         DisplayName = "Dogecoin",
                         Code = "DOGE"
                     },
-                    new Coin
+                    new()
                     {
                         Identifier = "ethereum",
                         DisplayName = "Ethereum",
                         Code = "ETH"
                     },
-                    new Coin
+                    new()
                     {
                         Identifier = "tether",
                         DisplayName = "Tether",
                         Code = "USDT"
                     },
-                    new Coin
+                    new()
                     {
                         Identifier = "cardano",
                         DisplayName = "Cardano",
                         Code = "ADA"
                     },
-                    new Coin
+                    new()
                     {
                         Identifier = "bitcoin",
                         DisplayName = "Bitcoin",
                         Code = "BTC"
                     },
-                    new Coin
+                    new()
                     {
                         Identifier = "usd-coin",
                         DisplayName = "USD Coin",
                         Code = "USDC"
                     },
-                    new Coin
+                    new()
                     {
                         Identifier = "polkadot",
                         DisplayName = "BNB",
                         Code = "BNB"
                     },
-                    new Coin
+                    new()
                     {
                         Identifier = "binancecoin",
                         DisplayName = "Polkadot",
                         Code = "DOT"
                     },
-                    new Coin
+                    new()
                     {
                         Identifier = "solana",
                         DisplayName = "Solana",
                         Code = "SOL"
                     },
-                    new Coin
+                    new()
                     {
                         Identifier = "ripple",
                         DisplayName = "XRP",
@@ -216,8 +204,6 @@ namespace Persistence
 
                 await _context.Coins.AddRangeAsync(coins);
             }
-
-            return coins;
         }
     }
 }
