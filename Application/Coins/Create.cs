@@ -1,16 +1,26 @@
-using Application.Core;
+﻿using Application.Core;
 using Application.Interfaces;
+using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Photos
+namespace Application.Coins
 {
-    public class SetMain
+    public class Create
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public string Id { get; set; }
+            public Coin Coin { get; set; }
+        }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(command => command.Coin).SetValidator(new CoinValidator());
+            }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -27,7 +37,6 @@ namespace Application.Photos
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users
-                    .Include(user => user.Photos)
                     .FirstOrDefaultAsync(user => user.UserName == _userAccessor.GetUserName(), cancellationToken);
 
                 if (user == null)
@@ -35,27 +44,24 @@ namespace Application.Photos
                     return null!;
                 }
 
-                var photo = user.Photos.FirstOrDefault(photo => photo.Id == request.Id);
-
-                if (photo == null)
+                if (!user.IsAdmin)
                 {
-                    return null!;
+                    return Result<Unit>.Failure("User is not an admin");
                 }
 
-                var currentMain = user.Photos.FirstOrDefault(image => image.IsMain);
-
-                if (currentMain != null)
+                var following = new CoinFollowing
                 {
-                    currentMain.IsMain = false;
-                }
+                    AppUser = user,
+                    Coin = request.Coin
+                };
 
-                photo.IsMain = true;
+                request.Coin.Followers.Add(following);
 
-                var succeeded = await _context.SaveChangesAsync(cancellationToken) > 0;
+                _context.Coins.Add(request.Coin);
 
-                return succeeded
-                    ? Result<Unit>.Success(Unit.Value)
-                    : Result<Unit>.Failure("Problem setting main photo");
+                var suceeded = await _context.SaveChangesAsync(cancellationToken) > 0;
+
+                return suceeded ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Failed to create coin");
             }
         }
     }

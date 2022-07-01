@@ -68,11 +68,6 @@ namespace Persistence
             });
 
             builder.Entity<Notification>()
-                .HasOne(notification => notification.Receiver)
-                .WithMany(user => user.Notifications)
-                .HasForeignKey(notification => notification.ReceiverId);
-
-            builder.Entity<Notification>()
                 .HasOne(notification => notification.Coin)
                 .WithMany(coin => coin.Notifications)
                 .HasForeignKey(notification => notification.CoinId);

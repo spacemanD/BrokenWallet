@@ -1,16 +1,16 @@
-using Application.Core;
+﻿using Application.Core;
 using Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Photos
+namespace Application.Coins
 {
-    public class SetMain
+    public class Delete
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public string Id { get; set; }
+            public Guid Id { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -27,7 +27,6 @@ namespace Application.Photos
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users
-                    .Include(user => user.Photos)
                     .FirstOrDefaultAsync(user => user.UserName == _userAccessor.GetUserName(), cancellationToken);
 
                 if (user == null)
@@ -35,27 +34,25 @@ namespace Application.Photos
                     return null!;
                 }
 
-                var photo = user.Photos.FirstOrDefault(photo => photo.Id == request.Id);
+                if (!user.IsAdmin)
+                {
+                    return Result<Unit>.Failure("User is not an admin");
+                }
 
-                if (photo == null)
+                var coin = await _context.Coins.FindAsync(new object[] { request.Id }, cancellationToken);
+
+                if (coin == null)
                 {
                     return null!;
                 }
 
-                var currentMain = user.Photos.FirstOrDefault(image => image.IsMain);
+                _context.Coins.Remove(coin);
 
-                if (currentMain != null)
-                {
-                    currentMain.IsMain = false;
-                }
+                var suceeded = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-                photo.IsMain = true;
-
-                var succeeded = await _context.SaveChangesAsync(cancellationToken) > 0;
-
-                return succeeded
+                return suceeded
                     ? Result<Unit>.Success(Unit.Value)
-                    : Result<Unit>.Failure("Problem setting main photo");
+                    : Result<Unit>.Failure("Failed to delete the coin");
             }
         }
     }

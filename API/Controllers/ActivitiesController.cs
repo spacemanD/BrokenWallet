@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Application.Activities;
+using Application.Coins;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetActivities([FromQuery]ActivityParams param)
+        public async Task<IActionResult> GetActivities([FromQuery]CoinParams param)
         {
             return HandlePagedResult(await Mediator.Send(new List.Query{Params = param}));
         }
@@ -25,7 +25,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateActivity(Activity activity)
         {
-            return HandleResult(await Mediator.Send(new Create.Command{Activity = activity}));
+            return HandleResult(await Mediator.Send(new Create.Command{Coin = activity}));
         }
 
         [Authorize(Policy = "IsActivityHost")]
@@ -33,7 +33,7 @@ namespace API.Controllers
         public async Task<IActionResult> EditActivity(Guid id, Activity activity)
         {
             activity.Id = id;
-            return HandleResult(await Mediator.Send(new Edit.Command{Activity = activity}));
+            return HandleResult(await Mediator.Send(new Edit.Command{Coin = activity}));
         }
 
         [Authorize(Policy = "IsActivityHost")]
@@ -46,7 +46,7 @@ namespace API.Controllers
         [HttpPost("{id}/attend")]
         public async Task<IActionResult> Attend(Guid id)
         {
-            return HandleResult(await Mediator.Send(new UpdateAttendance.Command{Id = id}));
+            return HandleResult(await Mediator.Send(new UpdateFollowing.Command{Id = id}));
         }
     }
 }

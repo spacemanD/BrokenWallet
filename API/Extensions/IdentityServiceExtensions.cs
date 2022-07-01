@@ -55,10 +55,10 @@ namespace API.Extensions
             services.AddAuthorization(opt => {
                 opt.AddPolicy("IsActivityHost", policy => 
                 {
-                    policy.Requirements.Add(new IsHostRequirement());
+                    policy.Requirements.Add(new IsAdminRequirement());
                 });
             });
-            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+            services.AddTransient<IAuthorizationHandler, IsAdminRequirementHandler>();
             services.AddScoped<TokenService>();
 
             return services;

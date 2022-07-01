@@ -23,7 +23,5 @@ namespace Domain.Entities
         public ICollection<UserFollowing> Followings { get; set; }
 
         public ICollection<UserFollowing> Followers { get; set; }
-
-        public ICollection<Notification> Notifications { get; set; }
     }
 }

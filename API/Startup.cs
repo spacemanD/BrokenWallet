@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using API.Extensions;
 using API.Middleware;
 using API.SignalR;
-using Application.Activities;
+using Application.Coins;
 using Application.Core;
 using FluentValidation.AspNetCore;
 using MediatR;

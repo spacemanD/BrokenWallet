@@ -11,33 +11,42 @@ namespace Application.Followers
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public string TargetUsername {get ; set;}
+            public string TargetUsername { get; set; }
         }
 
-         public class Handler : IRequestHandler<Command, Result<Unit>>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
-            private readonly IUserAccessor userAccessor;
+            private readonly IUserAccessor _userAccessor;
 
             public Handler(DataContext context, IUserAccessor userAccessor)
             {
                 _context = context;
-                this.userAccessor = userAccessor;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var observer = await _context.Users.FirstOrDefaultAsync(x => 
-                    x.UserName == userAccessor.GetUserName());
-                
-                var target = await _context.Users.FirstOrDefaultAsync(x => 
-                    x.UserName == request.TargetUsername);
+                var observer = await _context.Users.FirstOrDefaultAsync(user =>
+                    user.UserName == _userAccessor.GetUserName(), cancellationToken);
 
-                if(target == null) return null;
+                var target = await _context.Users.FirstOrDefaultAsync(user =>
+                    user.UserName == request.TargetUsername, cancellationToken);
 
-                var following = await _context.UserFollowings.FindAsync(observer.Id, target.Id);
+                if (observer == null)
+                {
+                    return null!;
+                }
 
-                if(following == null)
+                if (target == null)
+                {
+                    return null!;
+                }
+
+                var following = await _context.UserFollowings
+                    .FindAsync(new object[] { observer.Id, target.Id }, cancellationToken);
+
+                if (following == null)
                 {
                     following = new UserFollowing
                     {
@@ -52,11 +61,11 @@ namespace Application.Followers
                     _context.UserFollowings.Remove(following);
                 }
 
-                var success = await _context.SaveChangesAsync() > 0;
+                var succeeded = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-                if (success) return Result<Unit>.Success(Unit.Value);
-
-                return Result<Unit>.Failure("Failed to update following");
+                return succeeded
+                    ? Result<Unit>.Success(Unit.Value)
+                    : Result<Unit>.Failure("Failed to update following");
             }
         }
     }

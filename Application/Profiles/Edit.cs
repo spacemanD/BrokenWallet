@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Activities;
 using Application.Core;
 using AutoMapper;
 using FluentValidation;
@@ -19,15 +14,15 @@ namespace Application.Profiles
             public ProfileDto Profile { get; set; }
         }
 
-        public class CommandValidator: AbstractValidator<Command>
+        public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator() 
             { 
-                RuleFor(x => x.Profile).SetValidator(new ProfileValidator());
+                RuleFor(command => command.Profile).SetValidator(new ProfileValidator());
             }
         }
 
-        public class Handler : IRequestHandler<Edit.Command, Result<Unit>>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -40,10 +35,13 @@ namespace Application.Profiles
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var profile = await _context.Users.FirstOrDefaultAsync(x => x.UserName == request.Profile.Username, 
-                    cancellationToken: cancellationToken);
+                var profile = await _context.Users.
+                    FirstOrDefaultAsync(user => user.UserName == request.Profile.Username, cancellationToken);
 
-                if(profile == null)  return Result<Unit>.Failure("Failed to update the profile");
+                if (profile == null)
+                {
+                    Result<Unit>.Failure("Failed to update the profile");
+                }
 
                 _mapper.Map(request.Profile, profile);
                 
@@ -54,5 +52,3 @@ namespace Application.Profiles
         }
     }
 }
-
-        

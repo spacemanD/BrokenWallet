@@ -31,13 +31,13 @@ namespace Application.Profiles
             public async Task<Result<Profile>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users
-                    .ProjectTo<Profile>(_mapper.ConfigurationProvider, 
-                        new {currentUsername = _userAccessor.GetUserName()})
-                    .SingleOrDefaultAsync(x => x.Username == request.Username, cancellationToken);
+                    .ProjectTo<Profile>(_mapper.ConfigurationProvider, new
+                    {
+                        currentUsername = _userAccessor.GetUserName()
+                    })
+                    .SingleOrDefaultAsync(profile => profile.Username == request.Username, cancellationToken);
 
-                if(user == null) return null;
-
-                return Result<Profile>.Success(user);
+                return user == null ? null! : Result<Profile>.Success(user);
             }
         }
     }
