@@ -154,33 +154,63 @@ namespace Persistence
                 {
                     new Coin
                     {
-                        Identifier = "",
+                        Identifier = "dogecoin",
                         DisplayName = "Dogecoin",
                         Code = "DOGE"
                     },
                     new Coin
                     {
-                        Identifier = "",
+                        Identifier = "ethereum",
                         DisplayName = "Ethereum",
                         Code = "ETH"
                     },
                     new Coin
                     {
-                        Identifier = "",
+                        Identifier = "tether",
                         DisplayName = "Tether",
                         Code = "USDT"
                     },
                     new Coin
                     {
-                        Identifier = "",
+                        Identifier = "cardano",
                         DisplayName = "Cardano",
                         Code = "ADA"
                     },
                     new Coin
                     {
-                        Identifier = "",
+                        Identifier = "bitcoin",
                         DisplayName = "Bitcoin",
                         Code = "BTC"
+                    },
+                    new Coin
+                    {
+                        Identifier = "usd-coin",
+                        DisplayName = "USD Coin",
+                        Code = "USDC"
+                    },
+                    new Coin
+                    {
+                        Identifier = "polkadot",
+                        DisplayName = "BNB",
+                        Code = "BNB"
+                    },
+                    new Coin
+                    {
+                        Identifier = "binancecoin",
+                        DisplayName = "Polkadot",
+                        Code = "DOT"
+                    },
+                    new Coin
+                    {
+                        Identifier = "solana",
+                        DisplayName = "Solana",
+                        Code = "SOL"
+                    },
+                    new Coin
+                    {
+                        Identifier = "ripple",
+                        DisplayName = "XRP",
+                        Code = "XRP"
                     }
                 };
 
