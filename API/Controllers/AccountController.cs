@@ -19,18 +19,18 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class AccountController : BaseApiController
     {
-        private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
-        private readonly TokenService tokenService;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly TokenService _tokenService;
         private readonly IEmailSender _sender;
 
         public AccountController(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager, TokenService tokenService,
             IEmailSender sender)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.tokenService = tokenService;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _tokenService = tokenService;
             _sender = sender;
         }
 
