@@ -11,8 +11,7 @@ export default observer(function HomePage() {
         <Segment inverted textAlign='center' vertical className="masthead">
             <Container text>
                 <Header as='h1' inverted>
-                    <Image size='massive' src='/assets/wallet.png' alt='logo' style={{marginBottom: 12}}
-                    back/>
+                    <Image size='massive' src='/assets/wallet.png' alt='logo' style={{marginBottom: 12}} />
                     Broken wallet
                 </Header>
                 {userStore.isLoggedIn ? (

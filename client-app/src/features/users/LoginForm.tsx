@@ -1,12 +1,14 @@
 import { ErrorMessage, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { Button, Header, Label } from "semantic-ui-react";
 import MyTextInput from "../../app/common/form/MyTextInput";
 import { useStore } from "../../app/stores/store";
+import ResetPage from "./ResetPage";
 
 export default observer(function LoginForm() {
-    const {userStore} = useStore();
+    const {userStore, modalStore} = useStore();
     return (
         <Formik
             initialValues={{email: '', password: '', error: null}}
@@ -23,7 +25,11 @@ export default observer(function LoginForm() {
                         <Label style={{marginBottom: 10}} basic color='red' content={errors.error}/>}
                     />
                     <Button loading={isSubmitting} positive content='Login' type='submit' fluid />
-                </Form>
+                    <br/> 
+                    <Button onClick={() => modalStore.openModal(<ResetPage/>)} size='small' inverted color="green">
+                                Forgot password?
+                        </Button>
+                </Form> 
             )}
         </Formik>
     )
