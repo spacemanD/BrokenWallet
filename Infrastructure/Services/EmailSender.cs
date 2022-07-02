@@ -4,6 +4,7 @@ using System.Text;
 using Application.Core;
 using Application.Profiles;
 using Domain;
+using Domain.Entities;
 using Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

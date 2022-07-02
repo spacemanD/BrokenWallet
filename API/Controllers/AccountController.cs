@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using API.DTOs;
 using API.Services;
 using Application.Profiles;
-using Domain;
 using Domain.Entities;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
