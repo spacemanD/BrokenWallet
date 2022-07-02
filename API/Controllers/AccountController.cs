@@ -56,7 +56,6 @@ namespace API.Controllers
         [HttpPost("reset")]
         public async Task<IActionResult> ChangePassword(ForgotPasswordDto model) 
         {
-
             return HandleResult(await _sender.ChangePassword(model));
         }
 

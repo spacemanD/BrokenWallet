@@ -5,10 +5,8 @@ using Application.Core;
 using Application.Profiles;
 using Domain;
 using Infrastructure.Interfaces;
-using Infrastructure.Photos;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Services
@@ -34,7 +32,7 @@ namespace Infrastructure.Services
                 return Result<Unit>.Failure("Email is not existing");
             }
 
-            string password = GetRandomPassword(12);
+            string password = GetRandomPassword(6);
 
             var token = await _manager.GeneratePasswordResetTokenAsync(user);
 
@@ -48,9 +46,11 @@ namespace Infrastructure.Services
                     Email = user.Email,
                     PasswordHash = password
                 });
+
+                return Result<Unit>.Success(Unit.Value);
             }
 
-            return Result<Unit>.Success(Unit.Value);
+            return Result<Unit>.Failure(result?.Errors.ToString());
         }
 
         private void ResetPassword(AppUser user)
@@ -75,18 +75,22 @@ namespace Infrastructure.Services
 
         private static string GetRandomPassword(int length)
         {
-            const string chars = @"ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*?";
- 
+            const string letters = @"ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            const string digits = @"0123456789";
+            const string specials = @"!@#$%^&*?";
+
             StringBuilder sb = new StringBuilder();
             Random rnd = new Random();
  
             for (int i = 0; i < length; i++)
             {
-                int index = rnd.Next(chars.Length);
-                sb.Append(chars[index]);
+                var index = rnd.Next(letters.Length);
+                sb.Append(letters[index]);
+                var index2 = rnd.Next(digits.Length);
+                sb.Append(digits[index2]);
+                var index3 = rnd.Next(specials.Length);
+                sb.Append(specials[index3]);
             }
-
-            sb.Append(chars.Last());
 
             return sb.ToString();
         }

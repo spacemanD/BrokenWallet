@@ -84,9 +84,10 @@ namespace API.Extensions
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddIdentityCore<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentityCore<AppUser>()
                 .AddEntityFrameworkStores<DataContext>()
-                .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
+                .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider)
+                .AddDefaultTokenProviders();
             services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
             services.Configure<SmtpSettings>(configuration.GetSection("Smtp"));
             services.AddSignalR();
