@@ -1,6 +1,6 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Photo, Profile, UserActivity } from "../models/profile";
+import { Photo, Profile, UserCoin } from "../models/profile";
 import { store } from "./store";
 
 export default class ProfileStore {
@@ -11,7 +11,7 @@ export default class ProfileStore {
     followings: Profile [] = [];
     loadingFollowings = false;
     activeTab = 0;
-    userActivities: UserActivity[] = [];
+    userActivities: UserCoin[] = [];
     loadingActivities = false;
 
     constructor () {

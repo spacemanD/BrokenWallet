@@ -2,38 +2,27 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
 import {format} from 'date-fns';
-import { Activity } from '../../../../app/models/activity';
+import { Coin } from '../../../../app/models/activity';
 import ActivityListItemAttendee from '../ActivityListItemAttendee';
+import { useStore } from '../../../../app/stores/store';
 
 interface Props {
-    activity: Activity
+    activity: Coin
 }
 
 export default function ActivityListItem({ activity }: Props) {
-
+    const {userStore : {user}} = useStore();
     return (
         <Segment.Group>
             <Segment>
-                {activity.isCancelled &&
-                    <Label attached='top' color='red' content='Cancelled' style={{textAlign: 'center'}} />
-                }
                 <Item.Group>
                     <Item>
-                        <Item.Image style={{marginBottom: 3}} size='tiny' circular src={activity.host?.image || '/assets/user.png'} />
+                        <Item.Image style={{marginBottom: 3}} size='tiny' circular src={'/assets/user.png'} />
                         <Item.Content>
-                            <Item.Header as={Link} to={`/activities/${activity.id}`}>
-                                {activity.title}
-                            </Item.Header>
-                            <Item.Description>Created by <Link to={`/profiles/${activity.hostUsername}`}>{activity.host?.displayName}</Link>
-                            </Item.Description >
-                            {activity?.isHost && (
-                                <Item.Description>
-                                    <Label basic color='orange'>
-                                        You created this crypto
-                                    </Label>
-                                </Item.Description>
-                            )}
-                            {activity?.isGoing && !activity?.isHost && (
+                            <Item.Header as={Link} to={`/coins/${activity.id}`}>
+                                {activity.code}
+                            </Item.Header>                      
+                            {activity?.isFollowing  && (
                                 <Item.Description>
                                     <Label basic color='green'>
                                         You are following this crypto
@@ -46,18 +35,17 @@ export default function ActivityListItem({ activity }: Props) {
             </Segment>
             <Segment>
                 <span>
-                    <Icon name='clock' /> {format(activity.date!, 'dd MMM yyyy h:mm aa')}
-                    <Icon name='marker' /> {activity.venue}
+                    <Icon name='marker' />Followers count: {activity.followers.length}
                 </span>
             </Segment>
             <Segment secondary>
-                <ActivityListItemAttendee attendees={activity.attendees!} />
+                <ActivityListItemAttendee attendees={activity.followers!} />
             </Segment>
             <Segment clearing>
-                <span>{activity.description}</span>
+                <span>{activity.code}</span>
                 <Button 
                     as={Link}
-                    to={`/activities/${activity.id}`}
+                    to={`/coins/${activity.id}`}
                     color='teal'
                     floated='right'
                     content='View'

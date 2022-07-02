@@ -44,9 +44,9 @@ export default observer(function ActivityForm(){
                 ...activity,
                 id: uuid()
             };
-            createActivity(newactivity).then(() => history.push(`/activities/${newactivity.id}`))
+            createActivity(newactivity).then(() => history.push(`/coins/${newactivity.id}`))
         } else {
-            updateActivity(activity).then(() => history.push(`/activities/${activity.id}`))
+            updateActivity(activity).then(() => history.push(`/coins/${activity.id}`))
         }  
     }
 
@@ -79,7 +79,7 @@ export default observer(function ActivityForm(){
                     disabled={isSubmitting || !isValid || !dirty}
                     loading={isSubmitting} floated="right" 
                     positive type='submit' content='Submit'/>
-                <Button as={Link} to='/activities' floated="right" type='button' content='Cancel'/>
+                <Button as={Link} to='/coins' floated="right" type='button' content='Cancel'/>
             </Form>
             )}
         </Formik>

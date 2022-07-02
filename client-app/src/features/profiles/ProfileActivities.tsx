@@ -2,8 +2,7 @@ import React, { SyntheticEvent, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Tab, Grid, Header, Card, Image, TabProps } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { UserActivity } from '../../app/models/profile';
-import { format } from 'date-fns';
+import { UserCoin } from '../../app/models/profile';
 import { useStore } from "../../app/stores/store";
 const panes = [
     { menuItem: 'Popular', pane: { key: 'popular' } },
@@ -38,24 +37,23 @@ export default observer(function ProfileActivities() {
                     />
                     <br />
                     <Card.Group itemsPerRow={4}>
-                        {userActivities.map((activity: UserActivity) => (
+                        {userActivities.map((activity: UserCoin) => (
                             <Card
                                 as={Link}
-                                to={`/activities/${activity.id}`}
+                                to={`/coins/${activity.id}`}
                                 key={activity.id}
-                            >
-                                <Image
-                                    src={`/assets/categoryImages/${activity.category}.jpg`}
+                           >
+                             <Image
+                                    src={`/assets/categoryImages/${activity.identifier}.jpg`}
                                     style={{
                                         minHeight: 100, objectFit:'cover'
                                     }}
                                 />
                                 <Card.Content>
                                     <Card.Header
-                                        textAlign='center'>{activity.title}</Card.Header>
+                                        textAlign='center'>{activity.code}</Card.Header>
                                     <Card.Meta textAlign='center'>
-                                        <div>{format(new Date(activity.date),'do LLL')}</div>
-                                        <div>{format(new Date(activity.date),'h:mm a')}</div>
+                                        <div>{activity.displayName}</div>
                                     </Card.Meta>
                                 </Card.Content>
                             </Card>

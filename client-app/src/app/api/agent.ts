@@ -1,9 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
-import { Activity, ActivityFormValues } from "../models/activity";
+import { Coin, ActivityFormValues } from "../models/activity";
 import { PaginatedResult } from "../models/pagination";
-import { Photo, Profile, UserActivity } from "../models/profile";
+import { Photo, Profile, UserCoin } from "../models/profile";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 
@@ -70,13 +70,13 @@ const requests = {
 }
 
 const Activities = {
-list: (params: URLSearchParams) => axios.get<PaginatedResult<Activity[]>>('/activities', {params})
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Coin[]>>('/coins', {params})
     .then(responseBody),
-    details: (id: string) => requests.get<Activity>(`/activities/${id}`),
-    create: (activity: ActivityFormValues) => requests.post<void>(`/activities`, activity),
-    update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
-    delete: (id: string) => requests.del<void>(`/activities/${id}`),
-    attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {})
+    details: (id: string) => requests.get<Coin>(`/coins/${id}`),
+    create: (activity: ActivityFormValues) => requests.post<void>(`/coins`, activity),
+    update: (activity: ActivityFormValues) => requests.put<void>(`/coins/${activity.id}`, activity),
+    delete: (id: string) => requests.del<void>(`/coins/${id}`),
+    attend: (id: string) => requests.post<void>(`/coins/${id}/attend`, {})
 }
 
 const Account = {
@@ -102,7 +102,7 @@ const Profiles = {
     listFollowings: (username: string, predicate: string) => 
         requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
     listActivities: (username: string, predicate: string) => 
-    requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
+    requests.get<UserCoin[]>(`/profiles/${username}/coins?predicate=${predicate}`)
 }
 const agent = {
     Activities,

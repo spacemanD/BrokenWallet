@@ -14,7 +14,6 @@ namespace Application.Coins
 
         [JsonIgnore]
         public int MessagesCount { get; set; }
-
         public ICollection<FollowerDto> Followers { get; set; }
     }
 }

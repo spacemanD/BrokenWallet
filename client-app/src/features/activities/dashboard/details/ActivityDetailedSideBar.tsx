@@ -2,14 +2,16 @@ import React from 'react'
 import { Segment, List, Label, Item, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
-import { Activity } from '../../../../app/models/activity';
+import { Coin } from '../../../../app/models/activity';
+import { useStore } from '../../../../app/stores/store';
 
 interface Props {
-    activity: Activity;
+    activity: Coin;
 }
 
-export default observer(function ActivityDetailedSidebar ({activity :{attendees, host}}: Props) {
-    if(!attendees) return null;
+export default observer(function ActivityDetailedSidebar ({activity :{followers}}: Props) {
+    const {userStore} = useStore();
+    if(!followers) return null;
     return (
         <>
             <Segment
@@ -20,13 +22,13 @@ export default observer(function ActivityDetailedSidebar ({activity :{attendees,
                 inverted
                 color='teal'
             >
-                {attendees.length} {attendees.length === 1 ? 'Person' : 'People'} subcribing
+                {followers.length} {followers.length === 1 ? 'Person' : 'People'} subcribing
             </Segment>
             <Segment attached>
                 <List relaxed divided>
-                    {attendees.map(attendee => (
+                    {followers.map(attendee => (
                         <Item style={{ position: 'relative' }} key={attendee.username}>
-                            {attendee.username === host?.username &&
+                            {attendee.username === userStore.user?.username &&
                         <Label
                             style={{ position: 'absolute' }}
                             color='orange'

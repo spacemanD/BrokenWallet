@@ -52,7 +52,7 @@ namespace Persistence
                     {
                         DisplayName = "Dmytro Zinchenko",
                         UserName = "dimonfaraon",
-                        Email = "dmytro.zinchenko1@nure.ua ",
+                        Email = "dmytro.zinchenko1@nure.ua",
                         Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
                         IsAdmin = false,
                         IsBanned = false
@@ -186,15 +186,15 @@ namespace Persistence
                     {
                         Id = Guid.NewGuid(),
                         Identifier = "polkadot",
-                        DisplayName = "BNB",
-                        Code = "BNB"
+                        DisplayName = "Polkadot",
+                        Code = "DOT"
                     },
                     new()
                     {
                         Id = Guid.NewGuid(),
                         Identifier = "binancecoin",
                         DisplayName = "Polkadot",
-                        Code = "DOT"
+                        Code = "BNB"
                     },
                     new()
                     {
@@ -207,7 +207,7 @@ namespace Persistence
                     {
                         Id = Guid.NewGuid(),
                         Identifier = "ripple",
-                        DisplayName = "XRP",
+                        DisplayName = "Ripple",
                         Code = "XRP"
                     }
                 };

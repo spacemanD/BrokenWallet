@@ -1,14 +1,17 @@
 import { format } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import React from 'react'
-import {Segment, Grid, Icon} from 'semantic-ui-react'
-import { Activity } from '../../../../app/models/activity';
+import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
+import {Segment, Grid, Icon, GridColumn, Button, Item} from 'semantic-ui-react'
+import { Coin } from '../../../../app/models/activity';
 
 interface Props {
-    activity: Activity
+    activity: Coin
 }
 
 export default observer(function ActivityDetailedInfo({activity}: Props) {
+    const history = useHistory();
     return (
         <Segment.Group>
             <Segment attached='top'>
@@ -17,7 +20,7 @@ export default observer(function ActivityDetailedInfo({activity}: Props) {
                         <Icon size='large' color='teal' name='info'/>
                     </Grid.Column>
                     <Grid.Column width={15}>
-                        <p>{activity.description}</p>
+                        <p>{activity.displayName}</p>
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -27,9 +30,6 @@ export default observer(function ActivityDetailedInfo({activity}: Props) {
                         <Icon name='calendar' size='large' color='teal'/>
                     </Grid.Column>
                     <Grid.Column width={15}>
-            <span>
-                {format(activity.date!,'dd MMM yyyy h:mm aa')}
-            </span>
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -39,7 +39,9 @@ export default observer(function ActivityDetailedInfo({activity}: Props) {
                         <Icon name='marker' size='large' color='teal'/>
                     </Grid.Column>
                     <Grid.Column width={11}>
-                        <span>{activity.venue}, {activity.city}</span>
+                        <Item>
+                        <Item.Description>View {activity.displayName}<Link to={`/market/?id=${activity.identifier}&name=${activity.displayName}`}> CHART</Link></Item.Description>
+                        </Item>
                     </Grid.Column>
                 </Grid>
             </Segment>

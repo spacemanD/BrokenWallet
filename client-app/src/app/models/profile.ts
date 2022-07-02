@@ -25,9 +25,9 @@ export interface Photo {
     isMain: boolean
 }
 
-export interface UserActivity {
+export interface UserCoin {
     id: string;
-    title: string;
-    category: string;
-    date: Date;
+    identifier: string;
+    displayName: string;
+    code: string;
 }

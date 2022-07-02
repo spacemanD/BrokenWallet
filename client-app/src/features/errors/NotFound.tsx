@@ -10,7 +10,7 @@ export default function NotFound() {
                 Oops - we've looked and could not find this
         </Header>
             <Segment.Inline>
-                <Button as={Link} to='/activities' primary>
+                <Button as={Link} to='/coins' primary>
                     Return to Activities
                 </Button>
             </Segment.Inline>

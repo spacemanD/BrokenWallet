@@ -46,9 +46,9 @@ function App() {
               <NavBar />
               <Container style={{ marginTop: '7em' }}>
                 <Switch>
-                <PrivateRoute exact path='/activities' component={ActivityDashboard} />
-                <PrivateRoute path='/activities/:id' component={ActivityDetails} />
-                <PrivateRoute key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
+                <PrivateRoute exact path='/coins' component={ActivityDashboard} />
+                <PrivateRoute path='/coins/:id' component={ActivityDetails} />
+                <PrivateRoute key={location.key} path={['/createCoin', '/manage/:id']} component={ActivityForm} />
                 <PrivateRoute path='/profiles/:username' component={ProfilePage}/>
                 <PrivateRoute path='/errors' component={TestErrors}/>
                 <Route path='/server-error' component={ServerError}/>
@@ -57,7 +57,7 @@ function App() {
                     <Market />
                   </MarketProvider>
                 </Route>
-                <Route exact path="/coins">
+                <Route exact path="/coinsList">
                   <Coins />
                 </Route>
                 <Route component={NotFound} />
