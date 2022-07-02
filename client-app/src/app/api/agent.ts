@@ -76,7 +76,7 @@ const Activities = {
     create: (activity: ActivityFormValues) => requests.post<void>(`/coins`, activity),
     update: (activity: ActivityFormValues) => requests.put<void>(`/coins/${activity.id}`, activity),
     delete: (id: string) => requests.del<void>(`/coins/${id}`),
-    attend: (id: string) => requests.post<void>(`/coins/${id}/attend`, {})
+    attend: (id: string) => requests.post<void>(`/coins/${id}/track`, {})
 }
 
 const Account = {

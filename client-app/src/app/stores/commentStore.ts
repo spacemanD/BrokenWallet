@@ -11,10 +11,10 @@ export default class CommentStore {
         makeAutoObservable(this);
     }
 
-    createHubConnection = (activityId : string) => {
+    createHubConnection = (coinId : string) => {
         if(store.activityStore.selectedActivity){
            this.hubConnection = new HubConnectionBuilder()
-            .withUrl(process.env.REACT_APP_CHAT_URL + '?activityId=' + activityId, {
+            .withUrl(process.env.REACT_APP_CHAT_URL + '?coinId=' + coinId, {
                 accessTokenFactory: () => store.userStore.user?.token!
             })
             .withAutomaticReconnect()
@@ -52,7 +52,7 @@ export default class CommentStore {
     }
 
     addComments = async (values: any) => {
-        values.activityId = store.activityStore.selectedActivity?.id;
+        values.coinId = store.activityStore.selectedActivity?.id;
         try {
             await this.hubConnection?.invoke('SendComment', values);
         } catch (error) {
