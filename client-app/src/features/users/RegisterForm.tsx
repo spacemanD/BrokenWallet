@@ -34,6 +34,9 @@ export default observer(function RegisterForm() {
                     />
                     <Button disabled={!isValid || !dirty || isSubmitting} 
                         loading={isSubmitting} positive content='Register' type='submit' fluid />
+                    <br/> 
+                    <Button onClick={() => window.location.reload()}
+                        content='Back' fluid/>
                 </Form>
             )}
         </Formik>

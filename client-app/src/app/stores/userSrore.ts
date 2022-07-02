@@ -27,6 +27,16 @@ export default class UserStore {
         }
     }
 
+    reset = async (creds: UserFormValues) => {
+        try {
+            await agent.Account.reset(creds);
+            history.push('/');
+            store.modalStore.clodeModal();
+        } catch (error) {
+            throw error;
+        }
+    }
+
     logout = () => {
         store.commonStore.setToken(null);
         window.localStorage.removeItem('jwt');

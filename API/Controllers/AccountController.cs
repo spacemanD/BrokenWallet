@@ -3,7 +3,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Services;
+using Application.Profiles;
+using Domain;
 using Domain.Entities;
+using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +17,21 @@ namespace API.Controllers
     [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseApiController
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly TokenService _tokenService;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
+        private readonly TokenService tokenService;
+        private readonly IEmailSender _sender;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            TokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager, TokenService tokenService,
+            IEmailSender sender)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _tokenService = tokenService;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.tokenService = tokenService;
+            _sender = sender;
         }
 
         [HttpPost("login")]
@@ -44,6 +50,12 @@ namespace API.Controllers
             }
 
             return Unauthorized();
+        }
+
+        [HttpPost("reset")]
+        public async Task<IActionResult> ChangePassword(ForgotPasswordDto model) 
+        {
+            return HandleResult(await _sender.ChangePassword(model));
         }
 
         [HttpPost("register")]
