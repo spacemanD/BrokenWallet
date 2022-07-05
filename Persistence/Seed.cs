@@ -16,6 +16,16 @@ namespace Persistence
             _userManager = userManager;
             _context = context;
 
+            _context.UserFollowings.Clear();
+
+            _context.Subscriptions.Clear();
+
+            _context.Comments.Clear();
+
+            _context.Users.Clear();
+
+            await _context.SaveChangesAsync();
+
             await GetCoins();
             await GetUsers();
 

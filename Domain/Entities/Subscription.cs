@@ -10,6 +10,8 @@
 
         public string Description { get; set; }
 
+        public bool IsDefault { get; set; }
+
         public TimeSpan Duration { get; set; }
 
         public ICollection<AppUser> Subscribers { get; set; }

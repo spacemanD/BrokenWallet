@@ -4,6 +4,7 @@ export interface User {
     token: string;
     image?:string;
     isAdmin?:boolean;
+    IsBanned?: boolean;
 }
 
 export interface UserFormValues {
@@ -12,4 +13,5 @@ export interface UserFormValues {
     displayName?: string;
     username?:string;
     isAdmin?:boolean;
+    IsBanned?: boolean;
 }

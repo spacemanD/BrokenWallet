@@ -4,6 +4,7 @@ import { history } from "../..";
 import { Coin, ActivityFormValues } from "../models/activity";
 import { PaginatedResult } from "../models/pagination";
 import { Photo, Profile, UserCoin } from "../models/profile";
+import { Subscription } from "../models/subscription";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 
@@ -86,6 +87,10 @@ const Account = {
     reset: (user: UserFormValues) => requests.post<User>('/account/reset', user),
 }
 
+const Subscriptions = {
+    get: () => requests.get<Subscription[]>('/profiles/subscriptions'),
+}
+
 const Profiles = {
     get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
     uploadPhoto: (file: Blob) => {
@@ -107,7 +112,8 @@ const Profiles = {
 const agent = {
     Activities,
     Account,
-    Profiles
+    Profiles,
+    Subscriptions
 }
 
 export default agent;

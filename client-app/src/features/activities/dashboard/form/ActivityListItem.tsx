@@ -1,7 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
-import {format} from 'date-fns';
 import { Coin } from '../../../../app/models/activity';
 import ActivityListItemAttendee from '../ActivityListItemAttendee';
 import { useStore } from '../../../../app/stores/store';

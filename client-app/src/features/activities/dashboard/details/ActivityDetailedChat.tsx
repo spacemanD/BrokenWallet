@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default observer(function ActivityDetailedChat({activityId} : Props) {
-    const {commentStore} = useStore();
+    const {commentStore, userStore :{user}} = useStore();
 
     useEffect(() => {
         if(activityId) {
@@ -32,7 +32,7 @@ export default observer(function ActivityDetailedChat({activityId} : Props) {
                 color='teal'
                 style={{border: 'none'}}
             >
-                <Header>Chat about this event</Header>
+                <Header>Chat about this crypto</Header>
             </Segment>
             <Segment attached clearing>
             <Formik 
@@ -50,7 +50,9 @@ export default observer(function ActivityDetailedChat({activityId} : Props) {
                                     <div style={{position: 'relative'}}>
                                         <Loader active={isSubmitting} />
                                         <textarea 
-                                            placeholder='Enter your comment (Enter to submit, Shift + Enter for new line)'
+                                            disabled={user?.IsBanned}
+                                            placeholder= {!user?.IsBanned ? 'Enter your comment (Enter to submit, Shift + Enter for new line)' 
+                                            : 'You have been banned due to non-compliance with the user agreement'}
                                             rows={2}
                                             {...props.field}
                                             onKeyPress={e => {

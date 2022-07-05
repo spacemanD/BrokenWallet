@@ -28,5 +28,11 @@ namespace API.Controllers
                 Predicate = predicate
             }));
         }
+
+        [HttpGet("subscriptions")]
+        public async Task<IActionResult> GetSubscriptions()
+        {
+            return HandleResult(await Mediator.Send(new ListSubscriptions.Query()));
+        }
     }
 }
