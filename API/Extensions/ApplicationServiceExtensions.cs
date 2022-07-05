@@ -8,6 +8,7 @@ using Infrastructure.Interfaces;
 using Infrastructure.Photos;
 using Infrastructure.Security;
 using Infrastructure.Services;
+using Infrastructure.Settings;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
