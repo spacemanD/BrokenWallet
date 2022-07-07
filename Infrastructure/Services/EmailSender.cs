@@ -2,9 +2,9 @@
 using System.Net.Mail;
 using System.Text;
 using Application.Core;
+using Application.Interfaces;
 using Application.Profiles;
 using Domain.Entities;
-using Infrastructure.Interfaces;
 using Infrastructure.Settings;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -38,19 +38,19 @@ namespace Infrastructure.Services
 
             var result = await _manager.ResetPasswordAsync(user, token, password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                ResetPassword(new AppUser()
-                {
-                    DisplayName = user.DisplayName,
-                    Email = user.Email,
-                    PasswordHash = password
-                });
-
-                return Result<Unit>.Success(Unit.Value);
+                return Result<Unit>.Failure(result?.Errors.ToString()!);
             }
 
-            return Result<Unit>.Failure(result?.Errors.ToString()!);
+            ResetPassword(new AppUser
+            {
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                PasswordHash = password
+            });
+
+            return Result<Unit>.Success(Unit.Value);
         }
 
         private void ResetPassword(AppUser user)
@@ -59,13 +59,14 @@ namespace Infrastructure.Services
             mail.From = new MailAddress("brokenWallet@gmail.com");
             mail.To.Add(user.Email);
             mail.Subject = "Password Recovery";
-            mail.Body = "Hi, " + user.DisplayName + " \tYour new password: " + user.PasswordHash;
+            mail.Body = $"Hi, {user.DisplayName}!\nYour new password: {user.PasswordHash}.";
 
             using var smtpClient = new SmtpClient(_config.Value.Host, int.Parse(_config.Value.Port));
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = new NetworkCredential(_config.Value.Username, _config.Value.Password);
             smtpClient.EnableSsl = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol =
+                SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             smtpClient.Send(mail);
         }
 

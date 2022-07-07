@@ -2,7 +2,7 @@
 using Application.Profiles;
 using MediatR;
 
-namespace Infrastructure.Interfaces
+namespace Application.Interfaces
 {
     public interface IEmailSender
     {

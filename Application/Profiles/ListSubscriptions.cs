@@ -28,21 +28,21 @@ namespace Application.Profiles
             public async Task<Result<List<Subscription>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var userName = _accessor.GetUserName();
-                var user = _context.Users.Include(x => x.Subscription).FirstOrDefault(x => x.UserName == userName);
+                var user = _context.Users.Include(user => user.Subscription).FirstOrDefault(x => x.UserName == userName);
 
                 if (user == null)
                 {
                     return Result<List<Subscription>>.Success(await _context.Subscriptions.ToListAsync(cancellationToken));
                 }
 
-                var query = _context.Subscriptions.Select(x => new Subscription()
+                var query = _context.Subscriptions.Select(subscription => new Subscription
                 {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Price = x.Price,
-                    Duration = x.Duration,
-                    IsDefault = user.Subscription.Id == x.Id
+                    Id = subscription.Id,
+                    Name = subscription.Name,
+                    Description = subscription.Description,
+                    Price = subscription.Price,
+                    Duration = subscription.Duration,
+                    IsDefault = user.Subscription.Id == subscription.Id
                 });
 
                 var coins = await query.ToListAsync(cancellationToken);
