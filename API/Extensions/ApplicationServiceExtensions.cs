@@ -78,6 +78,7 @@ namespace API.Extensions
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<INotificationBuilder, NotificationBuilder>();
             services.AddIdentityCore<AppUser>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider)
