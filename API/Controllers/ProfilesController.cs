@@ -49,5 +49,11 @@ namespace API.Controllers
                 CoinId = id
             }));
         }
+
+        [HttpPost("notifications")]
+        public async Task<IActionResult> CreateNotification()
+        {
+            return HandleResult(await Mediator.Send(new AddNotification.Command()));
+        }
     }
 }
