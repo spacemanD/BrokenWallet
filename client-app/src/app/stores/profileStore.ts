@@ -1,6 +1,7 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Photo, Profile, UserActivity } from "../models/profile";
+import { Photo, Profile, UserCoin } from "../models/profile";
+import { User, UserFormValues } from "../models/user";
 import { store } from "./store";
 
 export default class ProfileStore {
@@ -11,11 +12,13 @@ export default class ProfileStore {
     followings: Profile [] = [];
     loadingFollowings = false;
     activeTab = 0;
-    userActivities: UserActivity[] = [];
+    userActivities: UserCoin[] = [];
     loadingActivities = false;
+    users : UserFormValues [] = [];
 
     constructor () {
         makeAutoObservable(this);
+        this.getUsers();
 
         reaction(
             () => this.activeTab,
@@ -26,7 +29,7 @@ export default class ProfileStore {
                 } else {
                     this.followings = [];
                 }
-            }
+            },
         )
     }
 
@@ -74,6 +77,15 @@ export default class ProfileStore {
         } catch (error) {
             console.log(error);
             runInAction(() => this.uploading = false)
+        }
+    }
+
+    getUsers = async () => {
+        try {
+            var result = await agent.Account.get();
+            this.users = result;
+        } catch (error) {
+            console.log(error);
         }
     }
 

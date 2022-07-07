@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Core;
 using Application.Interfaces;
-using Domain;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -21,41 +17,46 @@ namespace Application.Photos
 
         public class Handler : IRequestHandler<Command, Result<Photo>>
         {
-            private readonly DataContext context;
-            private readonly IPhotoAccessor photoAccessor;
-            private readonly IUserAccessor userAccessor;
+            private readonly DataContext _context;
+            private readonly IPhotoAccessor _photoAccessor;
+            private readonly IUserAccessor _userAccessor;
 
             public Handler(DataContext context, IPhotoAccessor photoAccessor, IUserAccessor userAccessor)
             {
-                this.context = context;
-                this.photoAccessor = photoAccessor;
-                this.userAccessor = userAccessor;
+                _context = context;
+                _photoAccessor = photoAccessor;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Result<Photo>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await context.Users.Include(x => x.Photos)
-                .FirstOrDefaultAsync(x => x.UserName == userAccessor.GetUserName());
-                
-                if (user == null) return null;
+                var user = await _context.Users
+                    .Include(user => user.Photos)
+                    .FirstOrDefaultAsync(user => user.UserName == _userAccessor.GetUserName(), cancellationToken);
 
-                var photoUploadResult = await photoAccessor.AddPhoto(request.File);
+                if (user == null)
+                {
+                    return null!;
+                }
 
-                var photo = new Photo 
+                var photoUploadResult = await _photoAccessor.AddPhoto(request.File);
+
+                var photo = new Photo
                 {
                     Url = photoUploadResult.Url,
                     Id = photoUploadResult.PublicId
                 };
 
-                if (!user.Photos.Any( x => x.IsMain)) photo.IsMain = true;
+                if (!user.Photos.Any(image => image.IsMain))
+                {
+                    photo.IsMain = true;
+                }
 
                 user.Photos.Add(photo);
 
-                var result = await context.SaveChangesAsync() > 0;
+                var uploadSuceeded = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-                if (result) return Result<Photo>.Success(photo);
-
-                return Result<Photo>.Failure("Problem adding photo");
+                return uploadSuceeded ? Result<Photo>.Success(photo) : Result<Photo>.Failure("Problem adding photo");
             }
         }
     }

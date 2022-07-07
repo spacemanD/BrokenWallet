@@ -20,7 +20,7 @@ export default class UserStore {
             const user = await agent.Account.login(creds);
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
-            history.push('/activities');
+            history.push('/coins');
             store.modalStore.clodeModal();
         } catch (error) {
             throw error;
@@ -58,7 +58,7 @@ export default class UserStore {
             const user = await agent.Account.register(creds);
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
-            history.push('/activities');
+            history.push('/coins');
             store.modalStore.clodeModal();
         } catch (error) {
             throw error;

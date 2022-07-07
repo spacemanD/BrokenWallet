@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Core;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -13,10 +9,9 @@ namespace Application.Comments
 {
     public class List
     {
-        
         public class Query : IRequest<Result<List<CommentDto>>>
         {
-            public Guid ActivityId { get; set; }
+            public Guid CoinId { get; set; }
         }
 
         public class Handler : IRequestHandler<Query,Result<List<CommentDto>>>
@@ -33,10 +28,10 @@ namespace Application.Comments
             public async Task<Result<List<CommentDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var comments = await _context.Comments
-                    .Where(x => x.Activity.Id == request.ActivityId)
-                    .OrderByDescending(x => x.CreatedAt)
+                    .Where(comment => comment.Coin.Id == request.CoinId)
+                    .OrderByDescending(comment => comment.CreatedAt)
                     .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
 
                 return Result<List<CommentDto>>.Success(comments);
             }

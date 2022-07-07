@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Core;
 using Application.Interfaces;
-using Application.Profiles;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -15,24 +10,24 @@ namespace Application.Followers
 {
     public class List
     {
-        
         public class Query : IRequest<Result<List<Profiles.Profile>>>
         {
             public string Predicate { get; set; }
+
             public string Username { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query,Result<List<Profiles.Profile>>>
+        public class Handler : IRequestHandler<Query, Result<List<Profiles.Profile>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
-            private readonly IUserAccessor userAccessor;
+            private readonly IUserAccessor _userAccessor;
 
             public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
                 _context = context;
                 _mapper = mapper;
-                this.userAccessor = userAccessor;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Result<List<Profiles.Profile>>> Handle(Query request, CancellationToken cancellationToken)
@@ -42,19 +37,21 @@ namespace Application.Followers
                 switch (request.Predicate)
                 {
                     case "followers":
-                        profiles = await _context.UserFollowings.Where(x => x.Target.UserName == request.Username)
-                            .Select(s => s.Observer)
+                        profiles = await _context.UserFollowings
+                            .Where(following => following.Target.UserName == request.Username)
+                            .Select(following => following.Observer)
                             .ProjectTo<Profiles.Profile>(_mapper.ConfigurationProvider,
-                                new {currentUsername = userAccessor.GetUserName()})
-                            .ToListAsync();
-                            break;
+                                new { currentUsername = _userAccessor.GetUserName() })
+                            .ToListAsync(cancellationToken);
+                        break;
                     case "following":
-                        profiles = await _context.UserFollowings.Where(x => x.Observer.UserName == request.Username)
-                            .Select(s => s.Target)
+                        profiles = await _context.UserFollowings
+                            .Where(following => following.Observer.UserName == request.Username)
+                            .Select(following => following.Target)
                             .ProjectTo<Profiles.Profile>(_mapper.ConfigurationProvider,
-                                new {currentUsername = userAccessor.GetUserName()})
-                            .ToListAsync();
-                            break;
+                                new { currentUsername = _userAccessor.GetUserName() })
+                            .ToListAsync(cancellationToken);
+                        break;
                 }
 
                 return Result<List<Profiles.Profile>>.Success(profiles);

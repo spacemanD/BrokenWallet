@@ -19,6 +19,7 @@ import PrivateRoute from './PrivateRoute';
 import MarketProvider from '../../store/MarketProvider';
 import Market from '../../containers/Market';
 import Coins from '../../containers/Coins';
+import UsersTable from './UsersTable';
 
 function App() {
   const location = useLocation();
@@ -46,18 +47,19 @@ function App() {
               <NavBar />
               <Container style={{ marginTop: '7em' }}>
                 <Switch>
-                <PrivateRoute exact path='/activities' component={ActivityDashboard} />
-                <PrivateRoute path='/activities/:id' component={ActivityDetails} />
-                <PrivateRoute key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
+                <PrivateRoute exact path='/coins' component={ActivityDashboard} />
+                <PrivateRoute path='/coins/:id' component={ActivityDetails} />
+                <PrivateRoute key={location.key} path={['/createCoin', '/manage/:id']} component={ActivityForm} />
                 <PrivateRoute path='/profiles/:username' component={ProfilePage}/>
                 <PrivateRoute path='/errors' component={TestErrors}/>
+                <PrivateRoute path='/userList' component={UsersTable}/>
                 <Route path='/server-error' component={ServerError}/>
                 <Route exact path="/market">
                   <MarketProvider>
                     <Market />
                   </MarketProvider>
                 </Route>
-                <Route exact path="/coins">
+                <Route exact path="/coinsList">
                   <Coins />
                 </Route>
                 <Route component={NotFound} />

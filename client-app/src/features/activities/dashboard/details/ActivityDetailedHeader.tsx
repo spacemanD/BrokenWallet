@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react'
 import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image, Label} from 'semantic-ui-react'
-import { Activity } from '../../../../app/models/activity';
+import { Coin } from '../../../../app/models/activity';
 import { useStore } from '../../../../app/stores/store';
 
 const activityImageStyle = {
@@ -20,50 +20,41 @@ const activityImageTextStyle = {
 };
 
 interface Props {
-    activity: Activity
+    activity: Coin
 }
 
 export default observer (function ActivityDetailedHeader({activity}: Props) {
-    const {activityStore: {updateAttendance, loading, cancelactivityToggle}} = useStore();
+    const {activityStore: {updateAttendance, loading, deleteActivity},userStore: {user}} = useStore();
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                {activity.isCancelled && 
-                <Label style={{position: 'absolute', zIndex: 1000, left: -14, top: 20}} 
-                ribbon color='red' content='Cancelled'/>
-            }
-                <Image src={`/assets/categoryImages/${activity.category}.jpg`} fluid style={activityImageStyle}/>
+                <Image src={`/assets/categoryImages/${activity.identifier}.jpg`} fluid style={activityImageStyle}/>
                 <Segment style={activityImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={activity.title}
+                                    content={activity.code}
                                     style={{color: 'white'}}
                                 />
-                                <p>{format(activity.date!,'dd MMM yyyy')}</p>
-                                <p>
-                                    Created by <strong><Link to={`/profiles/${activity.host?.username}`}>{activity.host?.displayName}</Link></strong>
-                                </p>
                             </Item.Content>
                         </Item>
                     </Item.Group>
                 </Segment>
             </Segment>
             <Segment clearing attached='bottom'>
-                {activity.isHost ? (
+                {user?.isAdmin ? (
                     <>
                     <Button
-                        color={activity.isCancelled ? 'green' : 'red'}
+                        color='red'
                         floated='left'
                         basic
-                        content={activity.isCancelled ? 'Re-activate Activity' : 'Delete crypto' }
-                        onClick={cancelactivityToggle}
+                        content='Delete crypto' 
+                        onClick={() => deleteActivity(activity.id)}
                         loading={loading}
                     />
                     <Button as={Link} 
-                        disabled={activity.isCancelled}
                         to={`/manage/${activity.id}`}
                         color='orange' 
                         floated='right'              
@@ -72,10 +63,10 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                     </Button>
                  </>
 
-                ) : activity.isGoing ? (
+                ) : activity.isFollowing ? (
                     <Button loading={loading} onClick={updateAttendance}>Cancel subcription</Button>
                 ) : (
-                    <Button disabled={activity.isCancelled}
+                    <Button 
                         loading={loading}
                         onClick={updateAttendance}
                         color='teal'>

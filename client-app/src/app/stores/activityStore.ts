@@ -1,14 +1,14 @@
 import { format } from "date-fns";
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Activity, ActivityFormValues } from "../models/activity";
+import { Coin, ActivityFormValues } from "../models/activity";
 import { Pagination, PagingParams } from "../models/pagination";
 import { Profile } from "../models/profile";
 import { store } from "./store";
 
 export default class ActivityStore{
-    activityRegistry = new Map<string, Activity>();
-    selectedActivity: Activity | undefined = undefined;
+    activityRegistry = new Map<string, Coin>();
+    selectedActivity: Coin | undefined = undefined;
     editMode = false;
     loading = false;
     loadingInitial = false;
@@ -71,20 +71,8 @@ export default class ActivityStore{
         })
         return params;
     }
-
-    get activitiesByDate() {
-        return Array.from(this.activityRegistry.values()).sort((a, b) => 
-            a.date!.getTime() - b.date!.getTime());
-    }
-
-    get groupedActivities() {
-        return Object.entries(
-            this.activitiesByDate.reduce((activities, activity) => {
-                const date = format(activity.date!, 'dd MMM yyyy');
-                activities[date] = activities[date] ? [...activities[date], activity] : [activity];
-                return activities;
-            }, {} as {[key: string] : Activity[]})
-        )
+    get activitiesByCode() {
+        return Array.from(this.activityRegistry.values()).sort((a, b) => a.code.localeCompare(b.code));
     }
 
     loadActivities = async () => {
@@ -133,16 +121,13 @@ export default class ActivityStore{
         return this.activityRegistry.get(id);
     }
 
-    private setActivity = (activity: Activity) => {
+    private setActivity = (activity: Coin) => {
         const user = store.userStore.user;
         if(user) {
-            activity.isGoing = activity.attendees!.some(
+            activity.isFollowing = activity.followers!.some(
                 a => a.username === user?.username
             )
-            activity.isHost = activity.hostUsername === user?.username;
-            activity.host = activity.attendees?.find(x => x.username === activity.hostUsername);
         }
-        activity.date = new Date(activity.date!);
         this.activityRegistry.set(activity.id, activity);
     }
 
@@ -155,9 +140,8 @@ export default class ActivityStore{
         const attendee = new Profile(user!);      
         try{
             await agent.Activities.create(activity);
-            const newActivity = new Activity(activity);
-            newActivity.hostUsername = user!.username;
-            newActivity.attendees = [attendee];
+            const newActivity = new Coin(activity);
+            newActivity.followers = [attendee];
             this.setActivity(newActivity);
             runInAction(() => {
                 this.selectedActivity = newActivity;
@@ -173,8 +157,8 @@ export default class ActivityStore{
             runInAction(() => {
                 if(activity.id) {
                     let updatedActivity = {...this.getActivity(activity.id), ...activity}
-                    this.activityRegistry.set(activity.id, updatedActivity as Activity);
-                    this.selectedActivity = updatedActivity as Activity;
+                    this.activityRegistry.set(activity.id, updatedActivity as Coin);
+                    this.selectedActivity = updatedActivity as Coin;
                 }
             })
         }catch (error) {
@@ -205,14 +189,14 @@ export default class ActivityStore{
         try{
             await agent.Activities.attend(this.selectedActivity!.id);
             runInAction (() => {
-                if(this.selectedActivity?.isGoing) {
-                    this.selectedActivity.attendees = 
-                    this.selectedActivity.attendees?.filter(x => x.username !== user?.username);
-                    this.selectedActivity.isGoing = false;
+                if(this.selectedActivity?.isFollowing) {
+                    this.selectedActivity.followers = 
+                    this.selectedActivity.followers?.filter(x => x.username !== user?.username);
+                    this.selectedActivity.isFollowing = false;
                 }else {
                     const attendee = new Profile(user!);
-                    this.selectedActivity?.attendees?.push(attendee);
-                    this.selectedActivity!.isGoing = true;
+                    this.selectedActivity?.followers?.push(attendee);
+                    this.selectedActivity!.isFollowing = true;
                 }
                 this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
             })
@@ -225,29 +209,13 @@ export default class ActivityStore{
         }
     }
 
-    cancelactivityToggle = async () => {
-        this.loading = true;
-        try {
-            await agent.Activities.attend(this.selectedActivity!.id);
-            runInAction(() => {
-                this.selectedActivity!.isCancelled = !this.selectedActivity?.isCancelled;
-                this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
-            })
-            
-        } catch (error) {
-            console.log(error);
-        } finally {
-            runInAction (() => this.loading = false);
-        }
-    }
-
     clearSelectedActivity = () => {
         this.selectedActivity = undefined;
     }
 
     updateAttendeeFollowing = (username: string) => {
         this.activityRegistry.forEach(activity => {
-            activity.attendees.forEach(attendee => {
+            activity.followers.forEach(attendee => {
                 if(attendee.username === username) {
                     attendee.following ? attendee.followersCount-- : attendee.followersCount++;
                     attendee.following = !attendee.following;

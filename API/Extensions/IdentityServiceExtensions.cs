@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Domain;
 using Persistence;
 using Microsoft.AspNetCore.Identity;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Domain.Entities;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 
@@ -18,34 +15,31 @@ namespace API.Extensions
 {
     public static class IdentityServiceExtensions
     {
-        public static IServiceCollection AddIdentityServices(this IServiceCollection services,
-         IConfiguration config)
+        public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
-             services.AddIdentityCore<AppUser>(opt => 
-             {
-                 opt.Password.RequireNonAlphanumeric = false;
-             })
-             .AddEntityFrameworkStores<DataContext>()
-             .AddSignInManager<SignInManager<AppUser>>();
+            services.AddIdentityCore<AppUser>(options => { options.Password.RequireNonAlphanumeric = false; })
+                .AddEntityFrameworkStores<DataContext>()
+                .AddSignInManager<SignInManager<AppUser>>();
 
-             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
 
-             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(opt => { 
-                    opt.TokenValidationParameters = new TokenValidationParameters
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = key,
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
-                    opt.Events = new JwtBearerEvents
+                    options.Events = new JwtBearerEvents
                     {
-                        OnMessageReceived = context => 
+                        OnMessageReceived = context =>
                         {
                             var accessToken = context.Request.Query["access_token"];
                             var path = context.HttpContext.Request.Path;
-                            if(!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
+                            if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
                             {
                                 context.Token = accessToken;
                             }
@@ -55,13 +49,11 @@ namespace API.Extensions
                     };
                 });
 
-            services.AddAuthorization(opt => {
-                opt.AddPolicy("IsActivityHost", policy => 
-                {
-                    policy.Requirements.Add(new IsHostRequirement());
-                });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin", policy => { policy.Requirements.Add(new IsAdminRequirement()); });
             });
-            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+            services.AddTransient<IAuthorizationHandler, IsAdminRequirementHandler>();
             services.AddScoped<TokenService>();
 
             return services;

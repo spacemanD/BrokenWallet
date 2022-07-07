@@ -1,265 +1,221 @@
-using Domain;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
-    public class Seed
+    public static class Seed
     {
-        public static async Task SeedData(DataContext context,
-            UserManager<AppUser> userManager)
+        private static Random _random;
+        private static UserManager<AppUser> _userManager;
+        private static DataContext _context;
+
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
-            var flag = userManager.Users.Any();
-            var users = flag ? userManager.Users.ToList() : await GetUsers(userManager);
-            if(!context.Activities.Any())
+            _random = new Random();
+            _userManager = userManager;
+            _context = context;
+
+            await _context.SaveChangesAsync();
+
+            await GetCoins();
+            await GetUsers();
+
+            await _context.SaveChangesAsync();
+        }
+
+        private static async Task GetUsers()
+        {
+            var subscriptions = await GetSubscriptions();
+
+            if (!_userManager.Users.Any())
             {
-                var activities = new List<Activity>
+                var users = new List<AppUser>
                 {
-                    new Activity
+                    new()
                     {
-                        Title = "Past Activity 1",
-                        Date = DateTime.Now.AddMonths(-2),
-                        Description = "Activity 2 months ago",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true
-                            }
-                        }
+                        DisplayName = "Andrii Dolhyi",
+                        UserName = "Overlord",
+                        Email = "andrii.dolhyi@nure.ua",
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
+                        IsAdmin = true,
+                        IsBanned = false
                     },
-                    new Activity
+                    new()
                     {
-                        Title = "Past Activity 2",
-                        Date = DateTime.Now.AddMonths(-1),
-                        Description = "Activity 1 month ago",
-                        Category = "culture",
-                        City = "Paris",
-                        Venue = "The Louvre",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false
-                            },
-                        }
+                        DisplayName = "Dmytro Prokopiev",
+                        UserName = "honest_expert47",
+                        Email = "dmytro.prokopiev@nure.ua",
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
+                        IsAdmin = true,
+                        IsBanned = false
                     },
-                    new Activity
+                    new()
                     {
-                        Title = "Future Activity 1",
-                        Date = DateTime.Now.AddMonths(1),
-                        Description = "Activity 1 month in future",
-                        Category = "music",
-                        City = "London",
-                        Venue = "Wembly Stadium",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false
-                            },
-                        }
+                        DisplayName = "Dmytro Zinchenko",
+                        UserName = "dimonfaraon",
+                        Email = "dmytro.zinchenko1@nure.ua",
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
+                        IsAdmin = false,
+                        IsBanned = false
                     },
-                    new Activity
+                    new()
                     {
-                        Title = "Future Activity 2",
-                        Date = DateTime.Now.AddMonths(2),
-                        Description = "Activity 2 months in future",
-                        Category = "food",
-                        City = "London",
-                        Venue = "Jamies Italian",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = false
-                            },
-                        }
+                        DisplayName = "Oleksandr Oliinyk",
+                        UserName = "AlexanderOleinik",
+                        Email = "oleksandr.oliinyk3@nure.ua",
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
+                        IsAdmin = false,
+                        IsBanned = false
                     },
-                    new Activity
+                    new()
                     {
-                        Title = "Future Activity 3",
-                        Date = DateTime.Now.AddMonths(3),
-                        Description = "Activity 3 months in future",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = true                            
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = false                            
-                            },
-                        }
+                        DisplayName = "Alisa Bondar",
+                        UserName = "Lutierre",
+                        Email = "alisa.bondar@nure.ua",
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
+                        IsAdmin = false,
+                        IsBanned = true
                     },
-                    new Activity
+                    new()
                     {
-                        Title = "Future Activity 4",
-                        Date = DateTime.Now.AddMonths(4),
-                        Description = "Activity 4 months in future",
-                        Category = "culture",
-                        City = "London",
-                        Venue = "British Museum",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = true                            
-                            }
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 5",
-                        Date = DateTime.Now.AddMonths(5),
-                        Description = "Activity 5 months in future",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Punch and Judy",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true                            
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false                            
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 6",
-                        Date = DateTime.Now.AddMonths(6),
-                        Description = "Activity 6 months in future",
-                        Category = "music",
-                        City = "London",
-                        Venue = "O2 Arena",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = true                            
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false                            
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 7",
-                        Date = DateTime.Now.AddMonths(7),
-                        Description = "Activity 7 months in future",
-                        Category = "travel",
-                        City = "Berlin",
-                        Venue = "All",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[0],
-                                IsHost = true                            
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = false                            
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 8",
-                        Date = DateTime.Now.AddMonths(8),
-                        Description = "Activity 8 months in future",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        Attendees = new List<ActivityAttendee>
-                        {
-                            new ActivityAttendee
-                            {
-                                AppUser = users[2],
-                                IsHost = true                            
-                            },
-                            new ActivityAttendee
-                            {
-                                AppUser = users[1],
-                                IsHost = false                            
-                            },
-                        }
+                        DisplayName = "Dmytro Vasyliev",
+                        UserName = "udvsharp",
+                        Email = "dmytro.vasyliev@nure.ua",
+                        Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
+                        IsAdmin = false,
+                        IsBanned = true
                     }
                 };
-                await context.Activities.AddRangeAsync(activities);
-                await context.SaveChangesAsync();
+
+                foreach (var user in users)
+                {
+                    await _userManager.CreateAsync(user, "Pa$$w0rd");
+                }
             }
         }
 
-        private async static Task<List<AppUser>> GetUsers(UserManager<AppUser> userManager)
+        private static async Task<List<Subscription>> GetSubscriptions()
         {
-            var users = new List<AppUser>
+            List<Subscription> subscriptions;
+
+            if (_context.Subscriptions.Any())
             {
-                new AppUser
+                subscriptions = await _context.Subscriptions.ToListAsync();
+            }
+            else
+            {
+                subscriptions = new List<Subscription>
                 {
-                        DisplayName = "Bob",
-                        UserName = "bob",
-                        Email = "bob@test.com"
-                    },
-                    new AppUser
+                    new()
                     {
-                        DisplayName = "Jane",
-                        UserName = "jane",
-                        Email = "jane@test.com"
+                        Name = "Standard",
+                        Price = 0,
+                        Description = "Standard subscription for newbie",
+                        Duration = TimeSpan.MaxValue
                     },
-                    new AppUser
+                    new()
                     {
-                        DisplayName = "Tom",
-                        UserName = "tom",
-                        Email = "tom@test.com"
+                        Name = "Premium for month",
+                        Price = 9.99m,
+                        Description = "Premium subscription for month for the custom audience",
+                        Duration = TimeSpan.FromDays(30)
                     },
+                    new()
+                    {
+                        Name = "Premium for year",
+                        Price = 99.99m,
+                        Description = "Premium subscription for year for the regular audience",
+                        Duration = TimeSpan.FromDays(365)
+                    }
                 };
 
-            foreach (var user in users)
-            {
-                await userManager.CreateAsync(user, "Pa$$w0rd");
+                await _context.Subscriptions.AddRangeAsync(subscriptions);
             }
 
-            return users;
+            return subscriptions;
+        }
+
+        private static async Task GetCoins()
+        {
+            if (!_context.Coins.Any())
+            {
+                var coins = new List<Coin>
+                {
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "dogecoin",
+                        DisplayName = "Dogecoin",
+                        Code = "DOGE"
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "ethereum",
+                        DisplayName = "Ethereum",
+                        Code = "ETH"
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "tether",
+                        DisplayName = "Tether",
+                        Code = "USDT"
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "cardano",
+                        DisplayName = "Cardano",
+                        Code = "ADA"
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "bitcoin",
+                        DisplayName = "Bitcoin",
+                        Code = "BTC"
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "usd-coin",
+                        DisplayName = "USD Coin",
+                        Code = "USDC"
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "polkadot",
+                        DisplayName = "Polkadot",
+                        Code = "DOT"
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "binancecoin",
+                        DisplayName = "Polkadot",
+                        Code = "BNB"
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "solana",
+                        DisplayName = "Solana",
+                        Code = "SOL"
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Identifier = "ripple",
+                        DisplayName = "Ripple",
+                        Code = "XRP"
+                    }
+                };
+
+                await _context.Coins.AddRangeAsync(coins);
+            }
         }
     }
 }
