@@ -1,8 +1,6 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Subscription } from "../models/subscription";
-
-
 
 export default class SubscriptionStore {
     subscriptions: Subscription [] = [];
@@ -10,6 +8,7 @@ export default class SubscriptionStore {
 
     constructor() {
         makeAutoObservable(this);
+        this.getSubscriptions();
     }
 
     getSubscriptions = async () => {
@@ -19,6 +18,17 @@ export default class SubscriptionStore {
                 this.selectedSubscriptions =  this.subscriptions[0];
             })
             return this.subscriptions;
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    setSubscription = async (sub : Subscription) => {
+        try{
+            await agent.Subscriptions.put(sub);
+            runInAction(() => {
+                this.selectedSubscriptions =  this.subscriptions[0];
+            })
         } catch(error) {
             console.log(error);
         }

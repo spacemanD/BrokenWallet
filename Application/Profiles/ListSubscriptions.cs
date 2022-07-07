@@ -11,6 +11,7 @@ namespace Application.Profiles
     {
         public class Query : IRequest<Result<List<Subscription>>>
         {
+            public int  CoinId { get; set; }
         }
 
         public class Handler : IRequestHandler<Query,Result<List<Subscription>>>

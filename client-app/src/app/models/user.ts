@@ -3,6 +3,7 @@ export interface User {
     displayName: string;
     token: string;
     image?:string;
+    email?: string;
     isAdmin?:boolean;
     IsBanned?: boolean;
 }

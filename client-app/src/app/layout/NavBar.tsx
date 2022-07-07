@@ -4,12 +4,11 @@ import { Link, NavLink } from "react-router-dom";
 import { Button, Container, Dropdown, Grid, Header, Image, Menu, MenuItem, Popup } from "semantic-ui-react";
 import { Subscription } from "../models/subscription";
 import { useStore } from "../stores/store";
+import UsersTable from "./UsersTable";
 
 export default observer(function NavBar(){
     const {userStore: {user, logout}} = useStore();
-    const {subscriptionStore: {subscriptions, getSubscriptions}} = useStore();
-    getSubscriptions();
-
+    const {subscriptionStore: {subscriptions, setSubscription}} = useStore();
     return (
         <Menu inverted fixed='top'>
             <Container>
@@ -19,6 +18,7 @@ export default observer(function NavBar(){
                 </Menu.Item>
                 <Menu.Item as={NavLink} to='/coins'name='Crypto'/>
                 <Menu.Item as={NavLink} to='/coinsList'name='Crypto List'/>
+                <Menu.Item as={NavLink} to='/userList' name='Users'/>
                     {user?.isAdmin && (
                         <Menu.Item>
                         <Button as={NavLink} to='/createCoin' positive content='Create crypto'/>
@@ -40,7 +40,10 @@ export default observer(function NavBar(){
                                 <b></b> Duration: {sub.duration}
 
                                 </p>
-                                <Button positive content = 'Buy'
+                                <Button 
+                                onClick={() => setSubscription(sub)}
+                                as = {NavLink} to = '/coins'
+                                positive content = 'Buy'
                                     disabled = {sub.isDefault}/>
                                 <br/>
                                 <b>-------------------------------------------------</b>

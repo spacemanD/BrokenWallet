@@ -85,10 +85,12 @@ const Account = {
     login: (user: UserFormValues) => requests.post<User>('/account/login', user),
     register: (user: UserFormValues) => requests.post<User>('/account/register', user),
     reset: (user: UserFormValues) => requests.post<User>('/account/reset', user),
+    get: () => requests.get<UserFormValues[]>('/profiles/users')
 }
 
 const Subscriptions = {
     get: () => requests.get<Subscription[]>('/profiles/subscriptions'),
+    put: (sub: Subscription) => requests.put<void>(`/profiles/subscriptions/${sub.id}`, sub),
 }
 
 const Profiles = {
