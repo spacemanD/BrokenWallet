@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Application.Profiles;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -47,6 +48,15 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new AddSubscriptions.Command
             {
                 CoinId = id
+            }));
+        }
+
+        [HttpPut("ban")]
+        public async Task<IActionResult> BanUser(AppUser profile)
+        {
+            return HandleResult(await Mediator.Send(new BanUser.Command
+            {
+                Profile = profile
             }));
         }
 

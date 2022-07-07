@@ -5,7 +5,7 @@ import { Coin, ActivityFormValues } from "../models/activity";
 import { PaginatedResult } from "../models/pagination";
 import { Photo, Profile, UserCoin } from "../models/profile";
 import { Subscription } from "../models/subscription";
-import { User, UserFormValues } from "../models/user";
+import { User, UserFormValues, UserListItem } from "../models/user";
 import { store } from "../stores/store";
 
 const sleep = (delay: number) => {
@@ -85,7 +85,7 @@ const Account = {
     login: (user: UserFormValues) => requests.post<User>('/account/login', user),
     register: (user: UserFormValues) => requests.post<User>('/account/register', user),
     reset: (user: UserFormValues) => requests.post<User>('/account/reset', user),
-    get: () => requests.get<UserFormValues[]>('/profiles/users')
+    get: () => requests.get<UserListItem[]>('/profiles/users')
 }
 
 const Subscriptions = {
@@ -105,6 +105,7 @@ const Profiles = {
     setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
     deletePhoto : (id: string) => requests.del(`/photos/${id}`),
     edit: (user: Partial<Profile>) => requests.put<Partial<Profile>>(`/profiles/${user.username}`, user),
+    ban: (user: UserListItem) => requests.put<UserListItem>(`/profiles/ban`, user),
     updateFollowing: (username: string) => requests.post(`/follow/${username}`, {}),
     listFollowings: (username: string, predicate: string) => 
         requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
