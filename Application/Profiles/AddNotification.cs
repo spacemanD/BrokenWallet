@@ -2,33 +2,34 @@
 using Application.Interfaces;
 using MediatR;
 
-namespace Application.Profiles;
-
-public class AddNotification
+namespace Application.Profiles
 {
-    public class Command : IRequest<Result<Unit>>
+    public class AddNotification
     {
-    }
-
-    public class Handler : IRequestHandler<Command, Result<Unit>>
-    {
-        private readonly INotificationBuilder _notificationBuilder;
-        
-        public Handler(INotificationBuilder notificationBuilder)
+        public class Command : IRequest<Result<Unit>>
         {
-            _notificationBuilder = notificationBuilder;
         }
 
-        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            var notification = await _notificationBuilder.BuildAsync();
-
-            if (notification == null)
+            private readonly INotificationBuilder _notificationBuilder;
+        
+            public Handler(INotificationBuilder notificationBuilder)
             {
-                Result<Unit>.Failure("Failed to update the profile subscription");
+                _notificationBuilder = notificationBuilder;
             }
 
-            return Result<Unit>.Success(Unit.Value);
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            {
+                var notification = await _notificationBuilder.BuildAsync();
+
+                if (notification == null)
+                {
+                    Result<Unit>.Failure("Failed to update the profile subscription");
+                }
+
+                return Result<Unit>.Success(Unit.Value);
+            }
         }
     }
 }

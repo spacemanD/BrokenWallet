@@ -55,5 +55,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new AddNotification.Command()));
         }
+        
+        [HttpGet("notifications")]
+        public async Task<IActionResult> GetNotifications()
+        {
+            return HandleResult(await Mediator.Send(new ListNotifications.Query()));
+        }
     }
 }

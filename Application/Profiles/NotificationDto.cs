@@ -1,12 +1,13 @@
-﻿namespace Application.Profiles;
-
-public class NotificationDto
+﻿namespace Application.Profiles
 {
-    public int Id { get; set; }
+    public class NotificationDto
+    {
+        public int Id { get; set; }
     
-    public Guid CoinId { get; set; }
+        public Guid CoinId { get; set; }
     
-    public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-    public string Message { get; set; }
+        public string Message { get; set; }
+    }
 }
