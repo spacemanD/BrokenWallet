@@ -7,6 +7,19 @@ namespace Application.Core
 {
     public class MappingProfiles : AutoMapper.Profile
     {
+        private static readonly string[] NotificationMessages =
+        {
+            "The exchange rate of {0} has plummeted.",
+            "{0} exchange rate has stopped falling.",
+            "{0} exchange rate continues to fall.",
+            "The exchange rate of {0} started to fall.",
+            "{0} exchange rate remains at the same level.",
+            "The exchange rate of {0} began to rise.",
+            "{0} exchange rate continues to rise.",
+            "{0} exchange rate has stopped rising.",
+            "The exchange rate of {0} has risen sharply."
+        };
+        
         public MappingProfiles()
         {
             string currentUsername = null!;
@@ -58,6 +71,9 @@ namespace Application.Core
                 .ForMember(userCoinDto => userCoinDto.Subscriber, options => options.MapFrom(following => following.AppUser.UserName))
                 .ForMember(userCoinDto => userCoinDto.CommentsCount, options => options.MapFrom(following => following.Coin.Comments.Count))
                 .ForMember(userCoinDto => userCoinDto.SubscribersCount, options => options.MapFrom(following => following.Coin.Followers.Count));
+            
+            CreateMap<Notification, NotificationDto>()
+                .ForMember(notificationDto => notificationDto.Message, options => options.MapFrom(notification => string.Format(NotificationMessages[(int)notification.Mode-1], notification.Coin.DisplayName)));
         }
     }
 }
