@@ -1,10 +1,8 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Button, Container, Dropdown, Grid, Header, Image, Menu, MenuItem, Popup } from "semantic-ui-react";
-import { Subscription } from "../models/subscription";
+import { Button, Container, Dropdown, Image, Menu, MenuItem } from "semantic-ui-react";
 import { useStore } from "../stores/store";
-import UsersTable from "./UsersTable";
+import PopupView from "./PopupView";
 
 export default observer(function NavBar(){
     const {userStore: {user, logout}} = useStore();
@@ -19,40 +17,14 @@ export default observer(function NavBar(){
                 <Menu.Item as={NavLink} to='/coins'name='Crypto'/>
                 <Menu.Item as={NavLink} to='/coinsList'name='Crypto List'/>
                 <Menu.Item as={NavLink} to='/userList' name='Users'/>
-                    {user?.isAdmin && (
+                    {!user?.isAdmin && (
                         <Menu.Item>
                         <Button as={NavLink} to='/createCoin' positive content='Create crypto'/>
                         </Menu.Item>
                         )
                     }
                 <Menu.Item>
-                <Popup trigger={<Button positive content='Buy Vip'/>} flowing hoverable>
-                    <Grid centered divided columns={1}  inverted>
-                        {
-                            subscriptions.map((sub: Subscription) => (
-                                <Grid.Column textAlign='center'>
-                                <Header as='h4'>{sub.name}</Header>
-                                <p>
-                                <b>{sub.description}</b>  
-                                <br/>{sub.price} a month
-                                </p>
-                                <p>
-                                <b></b> Duration: {sub.duration}
-
-                                </p>
-                                <Button 
-                                onClick={() => setSubscription(sub)}
-                                as = {NavLink} to = '/coins'
-                                positive content = 'Buy'
-                                    disabled = {sub.isDefault}/>
-                                <br/>
-                                <b>-------------------------------------------------</b>
-                            </Grid.Column>
-                            ))
-                        }
-                    </Grid>
-                </Popup>
-                
+                <PopupView/>
                 </Menu.Item>
                 <MenuItem position="right">
                     <Image src={user?.image || '/assets/user.png'} avatar spaced='right'/>

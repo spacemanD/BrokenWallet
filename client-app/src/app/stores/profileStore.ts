@@ -1,7 +1,8 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
+import { observer } from "mobx-react-lite";
 import agent from "../api/agent";
 import { Photo, Profile, UserCoin } from "../models/profile";
-import { User, UserFormValues } from "../models/user";
+import { UserListItem } from "../models/user";
 import { store } from "./store";
 
 export default class ProfileStore {
@@ -14,7 +15,9 @@ export default class ProfileStore {
     activeTab = 0;
     userActivities: UserCoin[] = [];
     loadingActivities = false;
-    users : UserFormValues [] = [];
+    users : UserListItem [] = [];
+    usersRegistry = new Map<string, UserListItem>();
+
 
     constructor () {
         makeAutoObservable(this);
@@ -59,6 +62,22 @@ export default class ProfileStore {
         }
     }
 
+    banProfile = async (user: UserListItem) => {
+        this.loadingProfile = true;
+        try {
+            user.isBanned = !user.isBanned; 
+            this.usersRegistry.set(user.id, user); 
+            await agent.Profiles.ban(user);
+            runInAction(() => {
+                this.loadingProfile = false;
+            });
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+            runInAction(() => this.loadingProfile = false);
+        }
+    }
+
     uploadPhoto = async (file: Blob) => {
         this.uploading = true;
         try {
@@ -82,8 +101,8 @@ export default class ProfileStore {
 
     getUsers = async () => {
         try {
-            var result = await agent.Account.get();
-            this.users = result;
+            this.users = await agent.Account.get() as UserListItem[];
+            this.users.forEach(user => this.usersRegistry.set(user.id, user));
         } catch (error) {
             console.log(error);
         }
