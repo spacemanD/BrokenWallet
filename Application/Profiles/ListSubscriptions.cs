@@ -29,10 +29,10 @@ namespace Application.Profiles
 
             public async Task<Result<List<SubscriptionDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var userName = _userAccessor.GetUserName();
+                var username = _userAccessor.GetUserName();
                 var user = _context.Users
                     .Include(user => user.Subscription)
-                    .FirstOrDefault(x => x.UserName == userName);
+                    .FirstOrDefault(x => x.UserName == username);
 
                 if (user == null)
                 {
@@ -41,7 +41,7 @@ namespace Application.Profiles
 
                 var subscriptions = await _context.Subscriptions
                     .ProjectTo<SubscriptionDto>(_mapper.ConfigurationProvider,
-                        new { currentSubscriptionId = user.Subscription.Id })
+                        new { currentSubscription = user.Subscription.Id })
                     .ToListAsync(cancellationToken);
 
                 return Result<List<SubscriptionDto>>.Success(subscriptions);
