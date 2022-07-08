@@ -1,5 +1,4 @@
 using Application.Core;
-using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -38,7 +37,7 @@ namespace Application.Profiles
                     Result<Unit>.Failure("Failed to update the profile");
                 }
 
-                profile.IsBanned = request.Profile.IsBanned;
+                profile!.IsBanned = request.Profile.IsBanned;
                 
                 var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 

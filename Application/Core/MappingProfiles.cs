@@ -73,7 +73,7 @@ namespace Application.Core
                 .ForMember(userCoinDto => userCoinDto.SubscribersCount, options => options.MapFrom(following => following.Coin.Followers.Count));
             
             CreateMap<Notification, NotificationDto>()
-                .ForMember(notificationDto => notificationDto.Message, options => options.MapFrom(notification => string.Format(NotificationMessages[(int)notification.Mode-1], notification.Coin.DisplayName)));
+                .ForMember(notificationDto => notificationDto.Message, options => options.MapFrom(notification => string.Format(NotificationMessages[(int)notification.Mode - 1], notification.Coin.DisplayName)));
         }
     }
 }

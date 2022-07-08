@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Application.Profiles;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -37,6 +38,7 @@ namespace API.Controllers
         }
 
         [HttpGet("users")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<IActionResult> GetUsers()
         {
             return HandleResult(await Mediator.Send(new ListUsers.Query()));
@@ -47,11 +49,12 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new AddSubscriptions.Command
             {
-                CoinId = id
+                SubscriptionId = id
             }));
         }
 
         [HttpPut("ban")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<IActionResult> BanUser(AppUser profile)
         {
             return HandleResult(await Mediator.Send(new BanUser.Command

@@ -11,33 +11,38 @@ namespace Infrastructure.Services
     {
         private readonly DataContext _dataContext;
         private readonly IMapper _mapper;
+        private readonly Random _random;
 
         public NotificationBuilder(DataContext dataContext, IMapper mapper)
         {
             _dataContext = dataContext;
             _mapper = mapper;
+            _random = new Random();
         }
 
         public async Task<NotificationDto> BuildAsync()
         {
-            var notification = new Notification();
+            var notification = new Notification
+            {
+                Mode = (NotificationMode)(_random.Next() % 9 + 1)
+            };
 
             if (!_dataContext.Coins.Any())
             {
                 return null!;
             }
 
-            var random = new Random();
-            notification.Coin = _dataContext.Coins.ElementAtOrDefault(random.Next() % _dataContext.Coins.Count());
+            notification.Coin = _dataContext.Coins
+                .Skip(_random.Next() % _dataContext.Coins.Count())
+                .FirstOrDefault();
 
             if (notification.Coin == default)
             {
                 return null!;
             }
 
-            notification.Mode = (NotificationMode)(random.Next() % 10 + 1);
-
             await _dataContext.Notifications.AddAsync(notification);
+            await _dataContext.SaveChangesAsync();
 
             return _mapper.Map<NotificationDto>(notification);
         }

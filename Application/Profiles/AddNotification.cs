@@ -6,11 +6,11 @@ namespace Application.Profiles
 {
     public class AddNotification
     {
-        public class Command : IRequest<Result<Unit>>
+        public class Command : IRequest<Result<NotificationDto>>
         {
         }
 
-        public class Handler : IRequestHandler<Command, Result<Unit>>
+        public class Handler : IRequestHandler<Command, Result<NotificationDto>>
         {
             private readonly INotificationBuilder _notificationBuilder;
         
@@ -19,7 +19,7 @@ namespace Application.Profiles
                 _notificationBuilder = notificationBuilder;
             }
 
-            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<NotificationDto>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var notification = await _notificationBuilder.BuildAsync();
 
@@ -28,7 +28,7 @@ namespace Application.Profiles
                     Result<Unit>.Failure("Failed to update the profile subscription");
                 }
 
-                return Result<Unit>.Success(Unit.Value);
+                return Result<NotificationDto>.Success(notification!);
             }
         }
     }

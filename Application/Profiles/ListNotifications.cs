@@ -1,7 +1,6 @@
 ﻿using Application.Core;
 using Application.Interfaces;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -37,16 +36,20 @@ namespace Application.Profiles
                     return null!;
                 }
 
-                var query = _context.Notifications
-                    .Where(notification => user.CoinFollowings
-                        .Select(following => following.Coin.Id)
-                        .Contains(notification.Coin.Id))
+                var sortedNotifications = await _context.Notifications
+                    .Include(notification => notification.Coin)
+                    .ThenInclude(coin => coin.Followers)
                     .OrderByDescending(notification => notification.CreatedAt)
-                    .ProjectTo<NotificationDto>(_mapper.ConfigurationProvider);
+                    .ToListAsync(cancellationToken);
 
-                var notification = await query.ToListAsync(cancellationToken);
+                var filteredNotifications = sortedNotifications
+                    .Where(notification => notification.Coin.Followers
+                        .Select(followers => followers.AppUserId)
+                        .Contains(user.Id));
 
-                return Result<List<NotificationDto>>.Success(notification);
+                var notifications = _mapper.Map<List<NotificationDto>>(filteredNotifications);
+
+                return Result<List<NotificationDto>>.Success(notifications);
             }
         }
     }
