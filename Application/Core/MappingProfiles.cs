@@ -23,7 +23,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             string currentUsername = null!;
-            var currentSubscription = 0;
+            int? currentSubscription = null;
 
             CreateMap<Coin, Coin>();
 

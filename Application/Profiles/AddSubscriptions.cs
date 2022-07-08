@@ -32,7 +32,7 @@ namespace Application.Profiles
 
                 if (profile == null)
                 {
-                    Result<Unit>.Failure("Failed to update the profile subscription");
+                    return Result<Unit>.Failure("Failed to update the profile subscription");
                 }
 
                 var subscription = await _context.Subscriptions
@@ -41,10 +41,10 @@ namespace Application.Profiles
 
                 if (subscription == null)
                 {
-                    Result<Unit>.Failure("Failed to update the profile subscription");
+                    return null!;
                 }
 
-                profile!.Subscription = subscription;
+                profile.Subscription = subscription;
 
                 var suceeded = await _context.SaveChangesAsync(cancellationToken) > 0;
 

@@ -32,7 +32,7 @@ namespace Application.Profiles
                 var username = _userAccessor.GetUserName();
                 var user = _context.Users
                     .Include(user => user.Subscription)
-                    .FirstOrDefault(x => x.UserName == username);
+                    .FirstOrDefault(user => user.UserName == username);
 
                 if (user == null)
                 {
