@@ -9,7 +9,6 @@ interface Props {
 }
 
 export default function ActivityListItem({ activity }: Props) {
-    const {userStore : {user}} = useStore();
     return (
         <Segment.Group>
             <Segment>
@@ -33,14 +32,16 @@ export default function ActivityListItem({ activity }: Props) {
             </Segment>
             <Segment>
                 <span>
-                    <Icon name='marker' />Followers count: {activity.followers.length}
+                    <Icon name='users' />Followers count: {activity.followers.length}
                 </span>
             </Segment>
             <Segment secondary>
                 <ActivityListItemAttendee attendees={activity.followers!} />
             </Segment>
             <Segment clearing>
-                <span>{activity.code}</span>
+                <span>
+                <Icon name='bitcoin' />{activity.code}
+                </span>
                 <Button 
                     as={Link}
                     to={`/coins/${activity.id}`}

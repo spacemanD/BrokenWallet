@@ -49,11 +49,11 @@
     "use-query-params": "^1.2.3",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11",
-    "proxy": "http://localhost:5000"
-  },
+    "yup": "^0.32.11"
+    },
   "scripts": {
     "start": "react-scripts start",
+    "clean": "rimraf ../API/wwwroot",
     "build": "react-scripts build",
     "postbuild": "move build ../API/wwwroot",
     "test": "react-scripts test",

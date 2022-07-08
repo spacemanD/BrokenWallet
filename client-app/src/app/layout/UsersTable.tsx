@@ -1,19 +1,23 @@
+import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { Button, Checkbox, Icon, Table } from 'semantic-ui-react'
+import { Button, Table } from 'semantic-ui-react'
 import { useStore } from '../stores/store';
+import LoadingComponent from './LoadingComponent';
 
-export default function UsersTable()
+export default observer(function UsersTable()
 {
-const {profileStore: {banProfile, loadingProfile, usersRegistry, getUsers}} = useStore();
+const {profileStore: {banProfile, loadingProfile, usersRegistry, getUsers, loadingUsers}} = useStore();
 const users = Array.from(usersRegistry.values());
 
 useEffect(() => {
   if( usersRegistry.size <= 1)  getUsers();
 }, [usersRegistry.size, getUsers])
 
+if (loadingUsers) return <LoadingComponent content='Loading users...' />
+
 return (
-  <Table celled compact definition>
-    <Table.Header fullWidth>
+  <Table celled complact definition>
+    <Table.Header fulWidth>
       <Table.Row>
         <Table.HeaderCell />
         <Table.HeaderCell>Name</Table.HeaderCell>
@@ -31,11 +35,13 @@ return (
                   !user.isBanned ?               
                   <Button negative 
                   onClick={() => banProfile(user)} 
+                  disabled={loadingProfile}
                   loading={loadingProfile}
                   content='Ban the user'
                   /> : 
                   <Button positive 
                   onClick={() => banProfile(user)} 
+                  disabled={loadingProfile}
                   loading={loadingProfile}
                   content='Recover user'
                   /> 
@@ -57,5 +63,4 @@ return (
       </Table.Row>
     </Table.Footer>
   </Table>
-)
-}
+)})

@@ -16,8 +16,7 @@ export default observer(function HomePage() {
                 </Header>
                 {userStore.isLoggedIn ? (
                     <>
-                        <Header as='h2' inverted content='Click here!'/>
-                        <Button as={Link} to='/activities' size='huge' inverted>
+                        <Button as={Link} to='/coins' size='huge' inverted>
                             Go to Broken wallet!
                          </Button>
                     </>

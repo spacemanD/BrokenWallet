@@ -19,7 +19,7 @@ export default observer(function ProfileAbout({profile}: Props) {
             <Grid>
                 <Grid.Column width={16}>
                     <Header floated="left" icon='user' content={"About " + profile?.displayName} />
-                    {isCurrentUser && (
+                {isCurrentUser && (
                             <Button floated="right" 
                             basic 
                             content={editMode ? 'Cancel' : 'Edit Profile'} 

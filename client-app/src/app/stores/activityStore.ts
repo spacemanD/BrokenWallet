@@ -14,7 +14,8 @@ export default class ActivityStore{
     loadingInitial = false;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
-    predicate = new Map().set('all', true);
+    predicate = new Map().set('predicate', 'all');
+    selectedPredicate = 'all';
 
     constructor() {
         makeAutoObservable(this);
@@ -33,28 +34,33 @@ export default class ActivityStore{
         this.pagingParams = pagingParams;
     }
 
-    setPredicate = (predicate: string, value: string | Date) => {
+    setPredicate = (predicate: string, value : string | null) => {
         const resetPredicate = () => {
-            this.predicate.forEach((value, key) => {
-                if(key !== 'startDate') this.predicate.delete(key);
+            this.predicate.forEach((key) => {
+                this.predicate.delete(key);
             })
         }
         switch (predicate) {
             case 'all':
                 resetPredicate();
-                this.predicate.set('all', true);
+                this.predicate.set('predicate','all');
+                this.selectedPredicate = 'all';
                 break;
-            case 'isGoing':
+            case 'popular':
                 resetPredicate();
-                this.predicate.set('isGoing', true);
+                this.predicate.set('predicate', 'popular');
+                this.selectedPredicate = 'popular';
                 break;
-            case 'isHost':
+            case 'trending':
                 resetPredicate();
-                this.predicate.set('isHost', true);
+                this.predicate.set('predicate','trending');
+                this.selectedPredicate = 'trending';
                 break;
-            case 'startDate':
-                this.predicate.delete('startDate');
-                this.predicate.set('startDate', value);
+            case 'coinname':
+                resetPredicate();
+                this.predicate.set('coinname', value);
+                this.selectedPredicate = 'coinname';
+            break;
         }
     }
 
