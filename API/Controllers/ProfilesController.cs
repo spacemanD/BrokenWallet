@@ -53,13 +53,13 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new ListUsers.Query()));
         }
 
-        [HttpPut("ban")]
+        [HttpPut("ban/{username}")]
         [Authorize(Policy = "IsAdmin")]
-        public async Task<IActionResult> BanUser(AppUser profile)
+        public async Task<IActionResult> BanUser(string username)
         {
             return HandleResult(await Mediator.Send(new BanUser.Command
             {
-                Profile = profile
+                Username = username
             }));
         }
 

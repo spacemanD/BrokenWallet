@@ -74,6 +74,8 @@ namespace Application.Core
             
             CreateMap<Notification, NotificationDto>()
                 .ForMember(notificationDto => notificationDto.Message, options => options.MapFrom(notification => string.Format(NotificationMessages[(int)notification.Mode - 1], notification.Coin.DisplayName)));
+            
+            CreateMap<AppUser, UserAdminDto>();
         }
     }
 }
