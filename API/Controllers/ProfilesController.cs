@@ -37,20 +37,20 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new ListSubscriptions.Query()));
         }
 
-        [HttpGet("users")]
-        [Authorize(Policy = "IsAdmin")]
-        public async Task<IActionResult> GetUsers()
-        {
-            return HandleResult(await Mediator.Send(new ListUsers.Query()));
-        }
-
         [HttpPut("subscriptions/{id}")]
-        public async Task<IActionResult> GetSubscriptions(int id)
+        public async Task<IActionResult> Subscribe(int id)
         {
             return HandleResult(await Mediator.Send(new AddSubscriptions.Command
             {
                 SubscriptionId = id
             }));
+        }
+
+        [HttpGet("users")]
+        [Authorize(Policy = "IsAdmin")]
+        public async Task<IActionResult> GetUsers()
+        {
+            return HandleResult(await Mediator.Send(new ListUsers.Query()));
         }
 
         [HttpPut("ban")]
@@ -68,7 +68,7 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new AddNotification.Command()));
         }
-        
+
         [HttpGet("notifications")]
         public async Task<IActionResult> GetNotifications()
         {
