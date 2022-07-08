@@ -1,7 +1,10 @@
 ﻿using Application.Coins;
 using Application.Comments;
+using Application.Interfaces;
 using Application.Profiles;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.Core
 {
@@ -23,6 +26,8 @@ namespace Application.Core
         public MappingProfiles()
         {
             string currentUsername = null!;
+            
+            int currentSubscriptionId = 0;
 
             CreateMap<Coin, Coin>();
 
@@ -74,8 +79,11 @@ namespace Application.Core
             
             CreateMap<Notification, NotificationDto>()
                 .ForMember(notificationDto => notificationDto.Message, options => options.MapFrom(notification => string.Format(NotificationMessages[(int)notification.Mode - 1], notification.Coin.DisplayName)));
-            
+
             CreateMap<AppUser, UserAdminDto>();
+
+            CreateMap<Subscription, SubscriptionDto>()
+                .ForMember(subscriptionDto => subscriptionDto.IsDefault, options => options.MapFrom(subscription => subscription.Id == currentSubscriptionId));
         }
     }
 }
