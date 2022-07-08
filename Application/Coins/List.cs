@@ -46,7 +46,7 @@ namespace Application.Coins
                 if (!string.IsNullOrEmpty(request.Params.CoinName))
                 {
                     query = query.Where(coin =>
-                        coin.DisplayName.ToLower().Contains(request.Params.CoinName.ToLower()));
+                        coin.DisplayName.Contains(request.Params.CoinName));
                 }
 
                 var pagedList = await PagedList<CoinDto>.CreateAsync(query, request.Params.PageNumber, request.Params.PageSize);

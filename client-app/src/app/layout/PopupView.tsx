@@ -5,8 +5,8 @@ import { Subscription } from "../models/subscription";
 import { useStore } from "../stores/store";
 
 export default observer(function PopupView(){
-    const {subscriptionStore: {subscriptions, setSubscription, selectedSubscriptions}} = useStore();
-
+    const {subscriptionStore: {subscriptions, setSubscription, selectedSubscriptions, loading, getSubscriptions}} = useStore();
+    getSubscriptions();
  return (   
  <Popup flowing hoverable 
  trigger={<Button positive content='Buy Vip'/>} 
@@ -24,10 +24,11 @@ export default observer(function PopupView(){
                 <b></b> Duration: {sub.duration}
                 </p>
                 <Button 
+                loading={loading}
                 onClick={() => setSubscription(sub)}
                 as = {NavLink} to = '/coins'
                 positive content = 'Buy'
-                    disabled = {sub.id == selectedSubscriptions?.id}/>
+                    disabled = {sub.id == selectedSubscriptions?.id || loading}/>
                 <br/>
                 <b>-------------------------------------------------</b>
             </Grid.Column>

@@ -27,7 +27,7 @@ export default observer(function ProfileActivities() {
             <Grid>
                 <Grid.Column width={16}>
                     <Header floated='left' icon='calendar'
-                        content={'Activities'} />
+                        content={'Crypto'} />
                 </Grid.Column>
                 <Grid.Column width={16}>
                     <Tab

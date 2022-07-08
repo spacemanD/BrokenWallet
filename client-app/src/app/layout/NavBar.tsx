@@ -15,14 +15,17 @@ export default observer(function NavBar(){
                   Broken Wallet
                 </Menu.Item>
                 <Menu.Item as={NavLink} to='/coins'name='Crypto'/>
-                <Menu.Item as={NavLink} to='/coinsList'name='Crypto List'/>
-                <Menu.Item as={NavLink} to='/userList' name='Users'/>
-                    {!user?.isAdmin && (
-                        <Menu.Item>
-                        <Button as={NavLink} to='/createCoin' positive content='Create crypto'/>
-                        </Menu.Item>
-                        )
-                    }
+                <Menu.Item as={NavLink} to='/coinsList'name='Rates'/>
+                {user!.isAdmin && (
+                    <Menu.Item as={NavLink} to='/userList' name='Users'/>
+                    )                   
+                }
+                {user!.isAdmin && (
+                    <Menu.Item>
+                    <Button as={NavLink} to='/createCoin' positive content='Create crypto'/>
+                    </Menu.Item>
+                    )     
+                }
                 <Menu.Item>
                 <PopupView/>
                 </Menu.Item>

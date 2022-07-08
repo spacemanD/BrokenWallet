@@ -1,9 +1,7 @@
-import { format } from 'date-fns';
 import { observer } from 'mobx-react-lite';
-import React from 'react'
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import {Segment, Grid, Icon, GridColumn, Button, Item} from 'semantic-ui-react'
+import {Segment, Grid, Icon, Item} from 'semantic-ui-react'
 import { Coin } from '../../../../app/models/activity';
 
 interface Props {
@@ -27,9 +25,10 @@ export default observer(function ActivityDetailedInfo({activity}: Props) {
             <Segment attached>
                 <Grid verticalAlign='middle'>
                     <Grid.Column width={1}>
-                        <Icon name='calendar' size='large' color='teal'/>
+                        <Icon name='users' size='large' color='teal'></Icon>
                     </Grid.Column>
                     <Grid.Column width={15}>
+                        <p>Followers : {activity.followers.length} </p>
                     </Grid.Column>
                 </Grid>
             </Segment>
