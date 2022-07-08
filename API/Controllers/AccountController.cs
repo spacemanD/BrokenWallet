@@ -107,6 +107,8 @@ namespace API.Controllers
                 DisplayName = appUser.DisplayName,
                 Image = appUser?.Photos?.FirstOrDefault(photo => photo.IsMain)?.Url,
                 Username = appUser.UserName,
+                IsBanned = appUser.IsBanned,
+                IsAdmin = appUser.IsAdmin,
                 Token = _tokenService.CreateToken(appUser)
             };
         }

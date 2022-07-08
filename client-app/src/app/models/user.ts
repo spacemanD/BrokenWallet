@@ -5,7 +5,7 @@ export interface User {
     image?:string;
     email?: string;
     isAdmin?:boolean;
-    IsBanned?: boolean;
+    isBanned?: boolean;
 }
 export interface UserListItem {
     displayName: string,
@@ -27,5 +27,5 @@ export interface UserFormValues {
     displayName?: string;
     username?:string;
     isAdmin?:boolean;
-    IsBanned?: boolean;
+    isBanned?: boolean;
 }

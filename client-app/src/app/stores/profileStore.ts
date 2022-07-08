@@ -8,6 +8,7 @@ import { store } from "./store";
 export default class ProfileStore {
     profile: Profile | null = null;
     loadingProfile = false;
+    loadingUsers = false;
     uploading = false;
     loading = false;
     followings: Profile [] = [];
@@ -21,7 +22,6 @@ export default class ProfileStore {
 
     constructor () {
         makeAutoObservable(this);
-        this.getUsers();
 
         reaction(
             () => this.activeTab,
@@ -100,10 +100,13 @@ export default class ProfileStore {
     }
 
     getUsers = async () => {
+        this.loadingUsers = true;
         try {
             this.users = await agent.Account.get() as UserListItem[];
             this.users.forEach(user => this.usersRegistry.set(user.id, user));
+            runInAction(() => this.loadingUsers = false);
         } catch (error) {
+            runInAction(() => this.loadingUsers = false);
             console.log(error);
         }
     }
