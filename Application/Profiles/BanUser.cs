@@ -1,6 +1,4 @@
 using Application.Core;
-using Domain.Entities;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -14,10 +12,6 @@ namespace Application.Profiles
             public string Username { get; set; }
         }
 
-        public class CommandValidator : AbstractValidator<Command>
-        {
-        }
-
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
@@ -29,8 +23,8 @@ namespace Application.Profiles
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var profile = await _context.Users.
-                    FirstOrDefaultAsync(user => user.UserName == request.Username, cancellationToken);
+                var profile = await _context.Users
+                    .FirstOrDefaultAsync(user => user.UserName == request.Username, cancellationToken);
 
                 if (profile == null)
                 {

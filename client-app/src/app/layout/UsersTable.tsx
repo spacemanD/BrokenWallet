@@ -29,8 +29,8 @@ return (
     </Table.Header>
     <Table.Body>
     {users.map((user) => 
-              <Table.Row key={user.userName}>
-              <Table.Cell collapsing key={user.userName}>
+              <Table.Row key={user.username}>
+              <Table.Cell collapsing key={user.username}>
                 {
                   !user.isBanned ?               
                   <Button negative 
@@ -48,7 +48,7 @@ return (
                 }
               </Table.Cell>
               <Table.Cell>{user.displayName}</Table.Cell>
-              <Table.Cell>{user.userName}</Table.Cell>
+              <Table.Cell>{user.username}</Table.Cell>
               <Table.Cell>{user.email}</Table.Cell>
               <Table.Cell>{user.isAdmin ? 'Yes' : 'No'}</Table.Cell>
               <Table.Cell>{user.isBanned ? 'Yes' : 'No'}</Table.Cell>

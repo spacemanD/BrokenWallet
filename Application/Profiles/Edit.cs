@@ -35,8 +35,8 @@ namespace Application.Profiles
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var profile = await _context.Users.
-                    FirstOrDefaultAsync(user => user.UserName == request.Profile.Username, cancellationToken);
+                var profile = await _context.Users
+                    .FirstOrDefaultAsync(user => user.UserName == request.Profile.Username, cancellationToken);
 
                 if (profile == null)
                 {

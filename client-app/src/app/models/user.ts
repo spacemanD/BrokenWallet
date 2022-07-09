@@ -8,18 +8,12 @@ export interface User {
     isBanned?: boolean;
 }
 export interface UserListItem {
+    id: string,
     displayName: string,
-    bio: string,
+    username: string,
+    email: string,
     isAdmin: boolean,
     isBanned: boolean,
-    subscription: null,
-    photos: null,
-    coinFollowings: null,
-    followings: null,
-    followers: null,
-    id: string,
-    userName: string,
-    email: string,
 }
 export interface UserFormValues {
     email: string;

@@ -36,7 +36,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new ListSubscriptions.Query()));
         }
 
-        [HttpPut("subscriptions/{id}")]
+        [HttpPut("subscriptions/{id:int}")]
         public async Task<IActionResult> Subscribe(int id)
         {
             return HandleResult(await Mediator.Send(new AddSubscriptions.Command
