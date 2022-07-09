@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'semantic-ui-css/semantic.min.css';
+import 'fomantic-ui/dist/semantic.min.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-datepicker/dist/react-datepicker.css'
@@ -14,6 +14,7 @@ import ScrollToTop from './app/layout/ScrollToTop';
 import { QueryParamProvider } from "use-query-params";
 import { GlobalStyle, theme } from './styles';
 import { ThemeProvider } from "styled-components";
+import 'react-notifications/lib/notifications.css';
 
 export let history = createBrowserHistory();
 

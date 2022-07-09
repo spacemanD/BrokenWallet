@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { Coin, ActivityFormValues } from "../models/activity";
+import { NotificationCustom } from "../models/notificationCustom";
 import { PaginatedResult } from "../models/pagination";
 import { Photo, Profile, UserCoin } from "../models/profile";
 import { Subscription } from "../models/subscription";
@@ -93,6 +94,11 @@ const Subscriptions = {
     put: (sub: Subscription) => requests.put<void>(`/profiles/subscriptions/${sub.id}`, sub),
 }
 
+const Notifications = {
+    get: () => requests.get<NotificationCustom[]>('/profiles/notifications'),
+    put: () => requests.put<NotificationCustom>(`/profiles/notifications/create`, {}),
+}
+
 const Profiles = {
     get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
     uploadPhoto: (file: Blob) => {
@@ -116,7 +122,8 @@ const agent = {
     Activities,
     Account,
     Profiles,
-    Subscriptions
+    Subscriptions,
+    Notifications
 }
 
 export default agent;

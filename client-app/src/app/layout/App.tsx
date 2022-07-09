@@ -20,6 +20,7 @@ import MarketProvider from '../../store/MarketProvider';
 import Market from '../../containers/Market';
 import Coins from '../../containers/Coins';
 import UsersTable from './UsersTable';
+import 'react-notifications-component/dist/theme.css'
 
 function App() {
   const location = useLocation();
@@ -37,7 +38,16 @@ function App() {
 
   return (
       <>
-      <ToastContainer position='bottom-right' hideProgressBar/>
+      <ToastContainer 
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover/>
       <ModalContainer />
         <Route exact path='/' component={HomePage} />
         <Route 

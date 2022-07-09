@@ -62,7 +62,7 @@ namespace API.Controllers
             }));
         }
 
-        [HttpPost("notifications")]
+        [HttpPut("notifications/create")]
         public async Task<IActionResult> CreateNotification()
         {
             return HandleResult(await Mediator.Send(new AddNotification.Command()));
