@@ -1,7 +1,4 @@
 using Application.Core;
-using AutoMapper;
-using Domain.Entities;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -12,11 +9,7 @@ namespace Application.Profiles
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public AppUser Profile { get; set; }
-        }
-
-        public class CommandValidator : AbstractValidator<Command>
-        {
+            public string Username { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -30,19 +23,19 @@ namespace Application.Profiles
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var profile = await _context.Users.
-                    FirstOrDefaultAsync(user => user.UserName == request.Profile.UserName, cancellationToken);
+                var profile = await _context.Users
+                    .FirstOrDefaultAsync(user => user.UserName == request.Username, cancellationToken);
 
                 if (profile == null)
                 {
-                    Result<Unit>.Failure("Failed to update the profile");
+                    return null!;
                 }
 
-                profile.IsBanned = request.Profile.IsBanned;
+                profile.IsBanned = !profile.IsBanned;
                 
-                var result = await _context.SaveChangesAsync(cancellationToken) > 0;
+                var succeeded = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-                return !result ? Result<Unit>.Failure("Failed to update the profile") : Result<Unit>.Success(Unit.Value);
+                return succeeded ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Failed to update the profile");
             }
         }
     }

@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Coin, ActivityFormValues } from "../models/activity";
@@ -10,7 +9,8 @@ export default class ActivityStore{
     activityRegistry = new Map<string, Coin>();
     selectedActivity: Coin | undefined = undefined;
     editMode = false;
-    loading = false;
+    loadingTracking = false;
+    loadingDeleting = false;
     loadingInitial = false;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
@@ -106,13 +106,13 @@ export default class ActivityStore{
             this.selectedActivity = activity;
             return activity;
         }else{
-            this.loading = true;
+            this.loadingTracking = true;
             try{
                 activity = await agent.Activities.details(id);
                 this.setActivity(activity);
                 runInAction(() => {
                     this.selectedActivity = activity;
-                    this.loading = false;
+                    this.loadingTracking = false;
                 })
                 this.setLoadingInitial(false);
                 return activity;
@@ -174,23 +174,23 @@ export default class ActivityStore{
     }
 
     deleteActivity = async (id : string) => {
-        this.loading =true;
+        this.loadingDeleting = true;
         try{
             await agent.Activities.delete(id);
             runInAction(() => {
                 this.activityRegistry.delete(id);
-                this.loading = false;
+                this.loadingDeleting = false;
             })
         }catch(error) {
             console.log(error);
             runInAction(() => {
-                this.loading = false;
+                this.loadingDeleting = false;
             })
         }
     }
 
     updateAttendance = async() => {
-        this.loading = true;
+        this.loadingTracking = true;
         const user = store.userStore.user;
         try{
             await agent.Activities.attend(this.selectedActivity!.id);
@@ -210,7 +210,7 @@ export default class ActivityStore{
             console.log(error);
         } finally {
             runInAction(() => {
-                this.loading = false;
+                this.loadingTracking = false;
             })
         }
     }

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Segment, List, Label, Item, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
@@ -22,13 +21,17 @@ export default observer(function ActivityDetailedSidebar ({activity :{followers}
                 inverted
                 color='teal'
             >
-                {followers.length} {followers.length === 1 ? 'Person' : 'People'} subcribing
+                {followers.length === 0 ? (
+                    <span> This coin has no followers. You can be the first one!</span>
+                ) : (
+                    <span> This coin followed by {followers.length} {followers.length === 1 ? 'user' : 'users'}.</span>
+                )}
             </Segment>
             <Segment attached>
                 <List relaxed divided>
                     {followers.map(attendee => (
                         <Item style={{ position: 'relative' }} key={attendee.username}>
-                            {attendee.username === userStore.user?.username &&
+                            {attendee.isAdmin &&
                         <Label
                             style={{ position: 'absolute' }}
                             color='orange'

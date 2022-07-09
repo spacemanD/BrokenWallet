@@ -78,14 +78,15 @@ namespace API.Extensions
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<INotificationBuilder, NotificationBuilder>();
             services.AddIdentityCore<AppUser>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider)
                 .AddDefaultTokenProviders();
             services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
             services.Configure<SmtpSettings>(configuration.GetSection("Smtp"));
-            services.AddSignalR(e => 
-                e.MaximumReceiveMessageSize = 102400000
+            services.AddSignalR(options => 
+                options.MaximumReceiveMessageSize = 102400000
             );
 
             return services;

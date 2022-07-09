@@ -184,9 +184,6 @@ namespace Persistence.Migrations
                     b.Property<int>("Mode")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ReceiverId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CoinId");
@@ -228,9 +225,6 @@ namespace Persistence.Migrations
 
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("interval");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");

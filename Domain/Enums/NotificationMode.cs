@@ -3,9 +3,13 @@
     public enum NotificationMode
     {
         Fallen = 1,
-        Falling = 2,
-        WithoutChanges = 3,
-        Growing = 4,
-        Grown = 5
+        StopFalling = 2,
+        Falling = 3,
+        StartFalling = 4,
+        WithoutChanges = 5,
+        StartGrowing = 6,
+        Growing = 7,
+        StopGrowing = 8,
+        Grown = 9
     }
 }

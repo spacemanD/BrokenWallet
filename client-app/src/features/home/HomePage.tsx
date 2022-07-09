@@ -18,7 +18,7 @@ export default observer(function HomePage() {
                     <>
                         <Button as={Link} to='/coins' size='huge' inverted>
                             Go to Broken wallet!
-                         </Button>
+                        </Button>
                     </>
                 ) : (
                     <>

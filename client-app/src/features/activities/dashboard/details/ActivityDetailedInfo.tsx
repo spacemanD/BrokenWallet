@@ -18,7 +18,7 @@ export default observer(function ActivityDetailedInfo({activity}: Props) {
                         <Icon size='large' color='teal' name='info'/>
                     </Grid.Column>
                     <Grid.Column width={15}>
-                        <p>{activity.displayName}</p>
+                        <p>{activity.displayName} ({activity.code})</p>
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -28,18 +28,22 @@ export default observer(function ActivityDetailedInfo({activity}: Props) {
                         <Icon name='users' size='large' color='teal'></Icon>
                     </Grid.Column>
                     <Grid.Column width={15}>
-                        <p>Followers : {activity.followers.length} </p>
+                        <p>{activity.followers.length === 0 ? (
+                            <span> This coin has no followers. You can be the first one!</span>
+                        ) : (
+                            <span> This coin followed by {activity.followers.length} {activity.followers.length === 1 ? 'user' : 'users'}.</span>
+                        )}</p>
                     </Grid.Column>
                 </Grid>
             </Segment>
             <Segment attached>
                 <Grid verticalAlign='middle'>
                     <Grid.Column width={1}>
-                        <Icon name='marker' size='large' color='teal'/>
+                        <Icon name='chart line' size='large' color='teal'/>
                     </Grid.Column>
                     <Grid.Column width={11}>
                         <Item>
-                        <Item.Description>View {activity.displayName}<Link to={`/market/?id=${activity.identifier}&name=${activity.displayName}`}> CHART</Link></Item.Description>
+                        <Item.Description><Link to={`/market/?id=${activity.identifier}&name=${activity.displayName}`}>View</Link> charts with {activity.displayName} rates</Item.Description>
                         </Item>
                     </Grid.Column>
                 </Grid>

@@ -65,8 +65,6 @@ export default class ProfileStore {
     banProfile = async (user: UserListItem) => {
         this.loadingProfile = true;
         try {
-            user.isBanned = !user.isBanned; 
-            this.usersRegistry.set(user.id, user); 
             await agent.Profiles.ban(user);
             runInAction(() => {
                 this.loadingProfile = false;

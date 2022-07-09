@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image, Label} from 'semantic-ui-react'
@@ -11,8 +10,8 @@ const activityImageStyle = {
 
 const activityImageTextStyle = {
     position: 'absolute',
-    bottom: '5%',
-    left: '5%',
+    bottom: '1%',
+    left: '1%',
     width: '100%',
     height: 'auto',
     color: 'white'
@@ -23,7 +22,7 @@ interface Props {
 }
 
 export default observer (function ActivityDetailedHeader({activity}: Props) {
-    const {activityStore: {updateAttendance, loading, deleteActivity},userStore: {user}} = useStore();
+    const {activityStore: {updateAttendance, loadingTracking: loadingTracking, loadingDeleting: loadingDeleting, deleteActivity},userStore: {user}} = useStore();
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
@@ -34,7 +33,7 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={activity.code}
+                                    content={`${activity.displayName} (${activity.code})`}
                                     style={{color: 'white'}}
                                 />
                             </Item.Content>
@@ -43,34 +42,36 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                 </Segment>
             </Segment>
             <Segment clearing attached='bottom'>
-                {user?.isAdmin ? (
-                    <>
-                    <Button
-                        color='red'
-                        floated='left'
-                        basic
-                        content='Delete crypto' 
-                        onClick={() => deleteActivity(activity.id)}
-                        loading={loading}
-                    />
-                    <Button as={Link} 
-                        to={`/manage/${activity.id}`}
-                        color='orange' 
-                        floated='right'              
-                    >
-                        Update crypto
-                    </Button>
-                 </>
-
-                ) : activity.isFollowing ? (
-                    <Button loading={loading} onClick={updateAttendance}>Cancel subcription</Button>
+                {activity.isFollowing ? (
+                    <Button loading={loadingTracking} onClick={updateAttendance}>Cancel subcription</Button>
                 ) : (
-                    <Button 
-                        loading={loading}
+                    <Button
+                        loading={loadingTracking}
                         onClick={updateAttendance}
-                        color='teal'>
-                        Subsribe on cripto
+                        color='teal'
+                        floated='left'
+                        >
+                        Track crypto
                     </Button>
+                )}
+                {user?.isAdmin && (
+                    <>
+                        <Button
+                            color='red'
+                            floated='right'
+                            basic
+                            content='Delete crypto'
+                            onClick={() => deleteActivity(activity.id)}
+                            loading={loadingDeleting}
+                        />
+                        <Button as={Link}
+                            to={`/manage/${activity.id}`}
+                            color='orange'
+                            floated='right'
+                        >
+                            Update crypto
+                        </Button>
+                    </>
                 )}
             </Segment>
         </Segment.Group>

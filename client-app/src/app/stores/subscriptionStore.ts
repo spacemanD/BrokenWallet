@@ -16,7 +16,7 @@ export default class SubscriptionStore {
             const result = await agent.Subscriptions.get();
             runInAction(() => {
                 this.subscriptions = result;
-                this.selectedSubscriptions =  this.subscriptions.find(x => x.isDefault);
+                this.selectedSubscriptions = this.subscriptions.find(x => x.isDefault);
             })
             return this.subscriptions;
         } catch(error) {

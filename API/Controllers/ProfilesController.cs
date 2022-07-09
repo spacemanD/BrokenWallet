@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Application.Profiles;
-using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -36,28 +36,42 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new ListSubscriptions.Query()));
         }
 
+        [HttpPut("subscriptions/{id:int}")]
+        public async Task<IActionResult> Subscribe(int id)
+        {
+            return HandleResult(await Mediator.Send(new AddSubscriptions.Command
+            {
+                SubscriptionId = id
+            }));
+        }
+
         [HttpGet("users")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<IActionResult> GetUsers()
         {
             return HandleResult(await Mediator.Send(new ListUsers.Query()));
         }
 
-        [HttpPut("subscriptions/{id}")]
-        public async Task<IActionResult> GetSubscriptions(int id)
-        {
-            return HandleResult(await Mediator.Send(new AddSubscriptions.Command
-            {
-                CoinId = id
-            }));
-        }
-
-        [HttpPut("ban")]
-        public async Task<IActionResult> BanUser(AppUser profile)
+        [HttpPut("ban/{username}")]
+        [Authorize(Policy = "IsAdmin")]
+        public async Task<IActionResult> BanUser(string username)
         {
             return HandleResult(await Mediator.Send(new BanUser.Command
             {
-                Profile = profile
+                Username = username
             }));
+        }
+
+        [HttpPut("notifications/create")]
+        public async Task<IActionResult> CreateNotification()
+        {
+            return HandleResult(await Mediator.Send(new AddNotification.Command()));
+        }
+
+        [HttpGet("notifications")]
+        public async Task<IActionResult> GetNotifications()
+        {
+            return HandleResult(await Mediator.Send(new ListNotifications.Query()));
         }
     }
 }

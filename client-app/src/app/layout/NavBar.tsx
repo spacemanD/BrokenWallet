@@ -1,14 +1,39 @@
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Button, Container, Dropdown, Image, Menu, MenuItem } from "semantic-ui-react";
+import { toast } from "react-toastify";
+import { Button, Container, Dropdown, Icon, Image, Menu, MenuItem } from "semantic-ui-react";
 import { useStore } from "../stores/store";
 import PopupView from "./PopupView";
 
 export default observer(function NavBar(){
-    const {userStore: {user, logout}} = useStore();
-    const {subscriptionStore: {subscriptions, setSubscription}} = useStore();
+    const {userStore: {user, logout}, notificationStore: {notifications, setNotification, getNotifications}} = useStore();
+    
+    const notify = () => {
+        setNotification();
+        setTimeout(function() {
+            toast(`💰 ${notifications[0].message}`, {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                })
+          }, 1000);
+    }
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            notify();
+        }, 100000);
+        return () => {
+            clearInterval(interval);};
+      }, []);
+
     return (
-        <Menu inverted fixed='top'>
+        <Menu inverted fixed='top' >
             <Container>
                 <Menu.Item as={NavLink} to='/' exact header>
                  <img src="/assets/wallet.png" alt="logo" style={{marginRight:'10px'}}/>
@@ -36,6 +61,20 @@ export default observer(function NavBar(){
                            <Dropdown.Item as={Link} to={`/profiles/${user?.username}`} 
                             text='My Profile' icon='user'/>
                            <Dropdown.Item onClick={logout} text='Logout' icon='power'/>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </MenuItem>
+                <MenuItem onClick={() => getNotifications()}>
+                <Icon name="bell" />
+                    <Dropdown pointing='left' lazyLoad scrolling>
+                        <Dropdown.Menu>
+                            {
+                                notifications.map((not) => (
+                                    <Dropdown.Item as={Link} to={`/coins/${not?.coinId}`} 
+                                    content={not.message} 
+                                    icon='bitcoin'/>
+                                ))
+                            }
                         </Dropdown.Menu>
                     </Dropdown>
                 </MenuItem>

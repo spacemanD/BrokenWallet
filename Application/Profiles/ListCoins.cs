@@ -1,5 +1,4 @@
 using Application.Core;
-using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -22,7 +21,7 @@ namespace Application.Profiles
             private readonly DataContext _context;
             private readonly IMapper _mapper;
 
-            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
+            public Handler(DataContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;

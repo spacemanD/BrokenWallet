@@ -7,6 +7,7 @@ export interface Profile {
     bio?: string;
     followersCount: number;
     followingCount: number;
+    isAdmin: boolean;
     following: boolean;
     photos?: Photo[];
 }

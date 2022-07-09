@@ -195,7 +195,7 @@ namespace Persistence
                     {
                         Id = Guid.NewGuid(),
                         Identifier = "binancecoin",
-                        DisplayName = "Polkadot",
+                        DisplayName = "Binancecoin",
                         Code = "BNB"
                     },
                     new()

@@ -16,7 +16,7 @@ export default observer(function ResetPage() {
             onSubmit={(values, {setErrors}) => 
                 userStore.reset(values).catch(error => 
                 setErrors({error: 'Email is not existing'}))
-                .then(() =>history.push('/')) 
+                .then(() => history.push('/')) 
             }
             validationSchema={Yup.object({
                 email: Yup.string().required().email()
@@ -36,7 +36,7 @@ export default observer(function ResetPage() {
                     type='submit' fluid />
                     <br/> 
                     <Button onClick={() => window.location.reload()}
-                        content='Back' />
+                        content='Back' fluid/>
                 </Form>
             )}
         </Formik>

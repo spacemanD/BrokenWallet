@@ -17,31 +17,41 @@ export default function ActivityListItem({ activity }: Props) {
                         <Item.Image style={{marginBottom: 3}} size='tiny' circular src={`/assets/categoryImages/${activity.identifier}.jpg`} />
                         <Item.Content>
                             <Item.Header as={Link} to={`/coins/${activity.id}`}>
-                                {activity.code}
+                                {activity.displayName}
                             </Item.Header>                      
-                            {activity?.isFollowing  && (
+                            {activity?.isFollowing ? (
                                 <Item.Description>
                                     <Label basic color='green'>
-                                        You are following this crypto
+                                        You are following this coin
                                     </Label>
                                 </Item.Description>
+                            ) : (
+                                <Item.Description>
+                                <Label basic color='black'>
+                                    {activity.code}
+                                </Label>
+                            </Item.Description> 
                             )}
                         </Item.Content>
                     </Item>
                 </Item.Group>
             </Segment>
-            <Segment>
+            <Segment
+                verticalAlign = 'middle'
+            >
                 <span>
-                    <Icon name='users' />Followers count: {activity.followers.length}
+                    <Icon name='users' /> 
+                    {activity.followers.length === 0 ? (
+                        <span> This coin has no followers. You can be the first one!</span>
+                    ) : (
+                        <span> This coin followed by {activity.followers.length} {activity.followers.length === 1 ? 'user' : 'users'}.</span>
+                    )}
                 </span>
             </Segment>
             <Segment secondary>
                 <ActivityListItemAttendee attendees={activity.followers!} />
             </Segment>
             <Segment clearing>
-                <span>
-                <Icon name='bitcoin' />{activity.code}
-                </span>
                 <Button 
                     as={Link}
                     to={`/coins/${activity.id}`}

@@ -3,6 +3,7 @@ import CoinStore from "./activityStore";
 import CommentStore from "./commentStore";
 import CommonStore from "./commonStore";
 import ModalStore from "./modalStore";
+import NotificationStore from "./notificationStore";
 import ProfileStore from "./profileStore";
 import SubscriptionStore from "./subscriptionStore";
 import UserStore from "./userSrore";
@@ -15,6 +16,7 @@ interface Store{
     profileStore: ProfileStore;
     commentStore: CommentStore;
     subscriptionStore: SubscriptionStore;
+    notificationStore : NotificationStore;
 }
 
 export const store: Store ={
@@ -24,7 +26,8 @@ export const store: Store ={
     modalStore: new ModalStore(),
     profileStore: new ProfileStore(),
     commentStore: new CommentStore(),
-    subscriptionStore: new SubscriptionStore()
+    subscriptionStore: new SubscriptionStore(),
+    notificationStore : new NotificationStore()
 }
 
 export const StoreContext = createContext(store);

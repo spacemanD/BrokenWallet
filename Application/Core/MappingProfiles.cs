@@ -7,9 +7,23 @@ namespace Application.Core
 {
     public class MappingProfiles : AutoMapper.Profile
     {
+        private static readonly string[] NotificationMessages =
+        {
+            "The exchange rate of {0} has plummeted.",
+            "{0} exchange rate has stopped falling.",
+            "{0} exchange rate continues to fall.",
+            "The exchange rate of {0} started to fall.",
+            "{0} exchange rate remains at the same level.",
+            "The exchange rate of {0} began to rise.",
+            "{0} exchange rate continues to rise.",
+            "{0} exchange rate has stopped rising.",
+            "The exchange rate of {0} has risen sharply."
+        };
+        
         public MappingProfiles()
         {
             string currentUsername = null!;
+            int? currentSubscription = null;
 
             CreateMap<Coin, Coin>();
 
@@ -23,7 +37,8 @@ namespace Application.Core
                 .ForMember(follower => follower.Image, options => options.MapFrom(following => following.AppUser.Photos.FirstOrDefault(photo => photo.IsMain)!.Url))
                 .ForMember(follower => follower.FollowersCount, options => options.MapFrom(following => following.AppUser.Followers.Count))
                 .ForMember(follower => follower.FollowingCount, options => options.MapFrom(following => following.AppUser.Followings.Count))
-                .ForMember(follower => follower.Following, options => options.MapFrom(following => following.AppUser.Followers.Any(userFollowing => userFollowing.Observer.UserName == currentUsername)));
+                .ForMember(follower => follower.Following, options => options.MapFrom(following => following.AppUser.Followers.Any(userFollowing => userFollowing.Observer.UserName == currentUsername)))
+                .ForMember(follower => follower.IsAdmin, options => options.MapFrom(following => following.AppUser.IsAdmin));
 
             CreateMap<AppUser, Profile>()
                 .ForMember(profile => profile.Image, options => options.MapFrom(user => user.Photos.FirstOrDefault(x => x.IsMain)!.Url))
@@ -58,6 +73,14 @@ namespace Application.Core
                 .ForMember(userCoinDto => userCoinDto.Subscriber, options => options.MapFrom(following => following.AppUser.UserName))
                 .ForMember(userCoinDto => userCoinDto.CommentsCount, options => options.MapFrom(following => following.Coin.Comments.Count))
                 .ForMember(userCoinDto => userCoinDto.SubscribersCount, options => options.MapFrom(following => following.Coin.Followers.Count));
+            
+            CreateMap<Notification, NotificationDto>()
+                .ForMember(notificationDto => notificationDto.Message, options => options.MapFrom(notification => string.Format(NotificationMessages[(int)notification.Mode - 1], notification.Coin.DisplayName)));
+
+            CreateMap<AppUser, UserAdminDto>();
+
+            CreateMap<Subscription, SubscriptionDto>()
+                .ForMember(subscriptionDto => subscriptionDto.IsDefault, options => options.MapFrom(subscription => subscription.Id == currentSubscription));
         }
     }
 }
