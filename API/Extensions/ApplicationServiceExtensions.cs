@@ -85,8 +85,8 @@ namespace API.Extensions
                 .AddDefaultTokenProviders();
             services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
             services.Configure<SmtpSettings>(configuration.GetSection("Smtp"));
-            services.AddSignalR(e => 
-                e.MaximumReceiveMessageSize = 102400000
+            services.AddSignalR(options => 
+                options.MaximumReceiveMessageSize = 102400000
             );
 
             return services;

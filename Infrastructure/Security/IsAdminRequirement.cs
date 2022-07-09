@@ -29,16 +29,16 @@ namespace Infrastructure.Security
                 return Task.CompletedTask;
             }
 
-            var attendee = _dbContext.Users
+            var user = _dbContext.Users
                 .AsNoTracking()
                 .SingleOrDefaultAsync(user => user.Id == userId && user.IsAdmin).Result;
 
-            if (attendee == null)
+            if (user == null)
             {
                 return Task.CompletedTask;
             }
 
-            if (attendee.IsAdmin)
+            if (user.IsAdmin)
             {
                 context.Succeed(requirement);
             }
