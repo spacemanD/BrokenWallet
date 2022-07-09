@@ -41,5 +41,4 @@ export default class NotificationStore {
         console.log(this.selectedNotification);
         this.notifications[0] = notification;
     }
-
 }
