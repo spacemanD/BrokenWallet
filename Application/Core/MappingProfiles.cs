@@ -37,7 +37,8 @@ namespace Application.Core
                 .ForMember(follower => follower.Image, options => options.MapFrom(following => following.AppUser.Photos.FirstOrDefault(photo => photo.IsMain)!.Url))
                 .ForMember(follower => follower.FollowersCount, options => options.MapFrom(following => following.AppUser.Followers.Count))
                 .ForMember(follower => follower.FollowingCount, options => options.MapFrom(following => following.AppUser.Followings.Count))
-                .ForMember(follower => follower.Following, options => options.MapFrom(following => following.AppUser.Followers.Any(userFollowing => userFollowing.Observer.UserName == currentUsername)));
+                .ForMember(follower => follower.Following, options => options.MapFrom(following => following.AppUser.Followers.Any(userFollowing => userFollowing.Observer.UserName == currentUsername)))
+                .ForMember(follower => follower.IsAdmin, options => options.MapFrom(following => following.AppUser.IsAdmin));
 
             CreateMap<AppUser, Profile>()
                 .ForMember(profile => profile.Image, options => options.MapFrom(user => user.Photos.FirstOrDefault(x => x.IsMain)!.Url))

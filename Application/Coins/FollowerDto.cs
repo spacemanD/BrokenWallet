@@ -9,6 +9,8 @@ namespace Application.Coins
         public string? Bio { get; set; }
 
         public string? Image { get; set; }
+        
+        public bool IsAdmin { get; set; }
 
         public bool Following { get; set; }
 
