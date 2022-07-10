@@ -68,13 +68,17 @@ export default observer(function NavBar(){
                 <Icon name="bell" />
                     <Dropdown pointing='left' lazyLoad scrolling>
                         <Dropdown.Menu>
-                            {
+                            {notifications.length > 0 ? 
                                 notifications.map((not) => (
                                     <Dropdown.Item as={Link} to={`/coins/${not?.coinId}`} 
                                     content={not.message} 
                                     icon='bitcoin'/>
-                                ))
+                                )) : ( 
+                                <Dropdown.Item  
+                                content={"You don't have still notifications"} 
+                                icon='bitcoin'/>) 
                             }
+
                         </Dropdown.Menu>
                     </Dropdown>
                 </MenuItem>
