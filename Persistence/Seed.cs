@@ -116,7 +116,7 @@ namespace Persistence
                     },
                     new()
                     {
-                        Name = "Premium for month",
+                        Name = "Premium for months",
                         Price = 9.99m,
                         Description = "Premium subscription for month for the custom audience",
                         Duration = TimeSpan.FromDays(30)
