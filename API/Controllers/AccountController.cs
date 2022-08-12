@@ -98,6 +98,11 @@ namespace API.Controllers
                 .Include(user => user.Photos)
                 .FirstOrDefaultAsync(user => user.Email == User.FindFirstValue(ClaimTypes.Email));
 
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
             return CreateUserObject(user);
         }
 
