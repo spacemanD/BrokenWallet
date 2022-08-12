@@ -44,7 +44,7 @@ namespace Persistence
                     new()
                     {
                         DisplayName = "Dmytro Prokopiev",
-                        UserName = "honest_expert47",
+                        UserName = "honest_expert48",
                         Email = "dmytro.prokopiev@nure.ua",
                         Subscription = subscriptions[_random.Next() % (subscriptions.Count - 1)],
                         IsAdmin = true,
